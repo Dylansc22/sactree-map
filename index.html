@@ -2,14 +2,21 @@
 <html>
 <head>
 <meta charset=utf-8 />
-<title>Layers</title>
-
+<title>Sacramento Tree Foundation - Map</title>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
-<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Rokkitt:400,700" />
+<link rel='stylesheet' href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' />
+<link rel='stylesheet' href='styles.css' />
 
 <style>
-  body { margin:0; padding:0; }
+  body { 
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: normal 18px/25px 'Rokkitt', Georgia, serif;
+    vertical-align: baseline;
+  }
   #map { position:absolute; top:0; bottom:0; width:100%; }
 </style>
 </head>
@@ -23,55 +30,56 @@
     right: 10px;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 10px;
     z-index: 100;
+    background-color: rgba(255,255,255,0.8);
+    border: 2px solid #BBB;
 }
 
 #map-ui a {
-    font: normal 13px/18px 'Helvetica Neue', Helvetica, sans-serif;
-    background: #FFF;
-    color: #3C4E5A;
+    background-image: url(http://www.sactree.com/images/bg/btn.jpg);
+    background-repeat:no-repeat;
+    background-position: center center;
+    color: #5C8829;
     display: block;
     margin: 0;
     padding: 0;
-    border: 1px solid #BBB;
-    border-bottom-width: 0;
-    min-width: 138px;
+    border-radius: 6px;
+    min-width: 120px;
     padding: 10px;
     text-decoration: none;
+    text-transform: uppercase;
+    text-align: center;
 }
 
 #map-ui a:hover {
-    background: #ECF5FA;
-}
-
-#map-ui li:last-child a {
-    border-bottom-width: 1px;
-    -webkit-border-radius: 0 0 3px 3px;
-    border-radius: 0 0 3px 3px;
-}
-
-#map-ui li:first-child a {
-    -webkit-border-radius: 3px 3px 0 0;
-    border-radius: 3px 3px 0 0;
+    opacity: 0.8; 
+    filter: alpha(opacity=80);
+    border-color: #FFF;
+    color: #729e3c;
 }
 
 #map-ui a.active {
     background: #3887BE;
-    border-color: #3887BE;
-    border-top-color: #FFF;
     color: #FFF;
 }
 </style>
+
 <ul id='map-ui'></ul>
 <div id='map'></div>
+   
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
 <script>
 var map = L.map('map').setView([38.574, -121.484], 11);
 var ui = document.getElementById('map-ui');
+var baseLayer = new L.mapbox.tileLayer('sactree.h7iaal0d', {
+  maxZoom: 18
+}).addTo(map);
 
-addLayer(L.mapbox.tileLayer('sactree.h7iaal0d'), 'Base Map', 1);
-addLayer(L.mapbox.tileLayer('examples.bike-lanes'), 'Bike Lanes', 2);
-addLayer(L.mapbox.tileLayer('examples.bike-locations'), 'Bike Stations', 3);
+//addLayer(L.mapbox.tileLayer(''), 'Base Map', 1);
+addLayer(L.mapbox.tileLayer('examples.bike-lanes'), 'Layer 1', 2);
+addLayer(L.mapbox.tileLayer('examples.bike-locations'), 'Layer 2', 3);
 
 function addLayer(layer, name, zIndex) {
     layer
@@ -84,7 +92,7 @@ function addLayer(layer, name, zIndex) {
     var link = document.createElement('a');
 
     link.href = '#';
-    link.className = 'active';
+    link.className = 'btn';
     link.innerHTML = name;
 
     link.onclick = function(e) {
@@ -104,12 +112,13 @@ function addLayer(layer, name, zIndex) {
     ui.appendChild(item);
 }
 
+//Add reference overlay
 var topPane = map._createPane('leaflet-top-pane', map.getPanes().mapPane);
-    var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
-      maxZoom: 18
-    }).addTo(map);
-    topPane.appendChild(topLayer.getContainer());
-    topLayer.setZIndex(7);
+var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
+  maxZoom: 18
+}).addTo(map);
+topPane.appendChild(topLayer.getContainer());
+topLayer.setZIndex(7);
 </script>
 
 
