@@ -71,6 +71,7 @@
    
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+<script src="gisdata.js"></script>
 <script>
 var map = L.map('map').setView([38.574, -121.484], 11);
 var ui = document.getElementById('map-ui');
@@ -78,9 +79,8 @@ var baseLayer = new L.mapbox.tileLayer('sactree.h7iaal0d', {
   maxZoom: 18
 }).addTo(map);
 
-//addLayer(L.mapbox.tileLayer(''), 'Base Map', 1);
-addLayer(L.mapbox.tileLayer('examples.bike-lanes'), 'Layer 1', 2);
-addLayer(L.mapbox.tileLayer('examples.bike-locations'), 'Layer 2', 3);
+addLayer(L.mapbox.tileLayer('examples.bike-lanes'), 'Layer 1', 1);
+addLayer(L.mapbox.tileLayer('examples.bike-locations'), 'Layer 2', 2);
 
 function addLayer(layer, name, zIndex) {
     layer
