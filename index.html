@@ -45,11 +45,12 @@
     margin: 0;
     padding: 0;
     border-radius: 6px;
-    min-width: 120px;
+    min-width: 105px;
     padding: 10px;
     text-decoration: none;
     text-transform: uppercase;
     text-align: center;
+    border: 1px solid #fff;
 }
 
 #map-ui a:hover {
@@ -60,8 +61,8 @@
 }
 
 #map-ui a.active {
-    background: #3887BE;
-    color: #FFF;
+    background: #A9D576;
+    color: #fff;
 }
 </style>
 
@@ -92,7 +93,7 @@ function addLayer(layer, name, zIndex) {
     var link = document.createElement('a');
 
     link.href = '#';
-    link.className = 'btn';
+    link.className = 'active';
     link.innerHTML = name;
 
     link.onclick = function(e) {
