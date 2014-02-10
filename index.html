@@ -1,12 +1,14 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset=utf-8 />
-<title>Sacramento Tree Foundation - Map</title>
+<title>Choropleth</title>
+
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
 <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Rokkitt:400,700" />
-<link rel='stylesheet' href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' />
-<link rel='stylesheet' href='styles.css' />
+
 
 <style>
   body { 
@@ -21,9 +23,22 @@
 </style>
 </head>
 <body>
-
-
 <style>
+.map-legend .swatch {
+  width:20px;
+  height:20px;
+  float:left;
+  margin-right:10px;
+  }
+.leaflet-popup-close-button {
+  display: none;
+  }
+.leaflet-popup-content-wrapper {
+  pointer-events: none;
+  }
+.leaflet-top-pane {
+    pointer-events: none;
+  }
 #map-ui {
     position: absolute;
     top: 15px;
@@ -37,10 +52,7 @@
 }
 
 #map-ui a {
-    background-image: url(http://www.sactree.com/images/bg/btn.jpg);
-    background-repeat:no-repeat;
-    background-position: center center;
-    color: #5C8829;
+    color: #E5EFD4;
     display: block;
     margin: 0;
     padding: 0;
@@ -53,75 +65,150 @@
     border: 1px solid #fff;
 }
 
+#map-ui a.tree {
+    background-color: #729B3F;
+}
+
+#map-ui a.health {
+    background-color: #4B75B3;
+}
+
 #map-ui a:hover {
     opacity: 0.8; 
     filter: alpha(opacity=80);
     border-color: #FFF;
-    color: #729e3c;
 }
 
 #map-ui a.active {
-    background: #A9D576;
+    opacity: 0.6; 
+    filter: alpha(opacity=60);
+    border: 2px solid #333;
     color: #fff;
 }
 </style>
-
-<ul id='map-ui'></ul>
+<ul id='map-ui'>
+  <li><a id="Percent_TC" class="lyr tree active">% Tree Canopy</a></li>
+  <li><a id="mean_bmi" class="lyr health">Mean BMI</a></li>
+  <li><a id="per_ovw_ob" class="lyr health">% Overweight or Obese</a></li>
+  <li><a id="per_ob" class="lyr health">% Obese</a></li>
+  <li><a id="per_mvpa" class="lyr health">% w/ >150min MVPA/wk</a></li>
+  <li><a id="per_hi_bp" class="lyr health">% w/ High Blood Pressure</a></li>
+  <li><a id="per_type2" class="lyr health">% w/ Type 2 Diabetes</a></li>
+  <li><a id="per_frpr" class="lyr health">% in Fair/Poor health</a></li>
+  <li><a id="per_asthma" class="lyr health">% w/ Asthma</a></li>
+</ul>
 <div id='map'></div>
-   
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
-<script src="gisdata.js"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+<script src='http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script> 
+
 <script>
-var map = L.map('map').setView([38.574, -121.484], 11);
-var ui = document.getElementById('map-ui');
-var baseLayer = new L.mapbox.tileLayer('sactree.h7iaal0d', {
-  maxZoom: 18
-}).addTo(map);
+  var mapdataviz = L.mapbox.map('map', 'landplanner.map-khn9uycz')
+    .setView([38.574, -121.484], 10);
 
-addLayer(L.mapbox.tileLayer('examples.bike-lanes'), 'Layer 1', 1);
-addLayer(L.mapbox.tileLayer('examples.bike-locations'), 'Layer 2', 2);
+  var popup = new L.Popup({ autoPan: false });
+  $.getJSON('sactree_zips.json', function(data) {
+      var zips_geojson = topojson.feature(data, data.objects.zips).features;
+      //var blockgroups_geojson = topojson.feature(data, data.objects.blockgroups).features;
 
-function addLayer(layer, name, zIndex) {
-    layer
-        .setZIndex(zIndex)
-        .addTo(map);
+  // statesData comes from the 'us-states.js' script included above
+  var zipsLayer = L.geoJson(zips_geojson,  {
+      style: getStyle,
+      onEachFeature: onEachFeature
+  }).addTo(mapdataviz);
 
-    // Create a simple layer switcher that toggles layers on
-    // and off.
-    var item = document.createElement('li');
-    var link = document.createElement('a');
+  function getStyle(feature) {
+      return {
+          weight: 1,
+          opacity: 0.2,
+          color: 'black',
+          fillOpacity: 0.95,
+          fillColor: getColor(feature.properties.Percent_TC)
+      };
+  }
 
-    link.href = '#';
-    link.className = 'active';
-    link.innerHTML = name;
+  // get color depending on population density value
+  function getColor(d) {
+      return d > 33 ? '#588125' : 
+             d > 23 ? '#729B3F' : 
+             d > 15 ? '#8BB458' : 
+             d > 9 ? '#A5CE72' : 
+             d > 4 ? '#BEE78B' : 
+             d > 0.5 ? '#D7FFA4' : 
+             '#fff';
+    }
 
-    link.onclick = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+  function onEachFeature(feature, layer) {
+      layer.on({
+          mousemove: mousemove,
+          mouseout: mouseout,
+          click: zoomToFeature
+      });
+  }
 
-        if (map.hasLayer(layer)) {
-            map.removeLayer(layer);
-            this.className = '';
-        } else {
-            map.addLayer(layer);
-            this.className = 'active';
-        }
-    };
+  var closeTooltip;
 
-    item.appendChild(link);
-    ui.appendChild(item);
-}
+  function mousemove(e) {
+      var layer = e.target;
 
-//Add reference overlay
-var topPane = map._createPane('leaflet-top-pane', map.getPanes().mapPane);
-var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
-  maxZoom: 18
-}).addTo(map);
-topPane.appendChild(topLayer.getContainer());
-topLayer.setZIndex(7);
-</script>
+      popup.setLatLng(e.latlng);
+      popup.setContent('<div class="marker-title">' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</div>' +
+          Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '% Tree Canopy');
 
+      if (!popup._map) popup.openOn(mapdataviz);
+      window.clearTimeout(closeTooltip);
 
+      // highlight feature
+      layer.setStyle({
+          weight: 3,
+          opacity: 0.3,
+          fillOpacity: 0.3
+      });
+
+      if (!L.Browser.ie && !L.Browser.opera) {
+          layer.bringToFront();
+      }
+  }
+
+  function mouseout(e) {
+      zipsLayer.resetStyle(e.target);
+      closeTooltip = window.setTimeout(function() {
+          mapdataviz.closePopup();
+      }, 100);
+  }
+
+  function zoomToFeature(e) {
+      mapdataviz.fitBounds(e.target.getBounds());
+  }
+
+  /*mapdataviz.legendControl.addLegend(getLegendHTML());
+
+  function getLegendHTML() {
+    var grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+    labels = [],
+    from, to;
+
+    for (var i = 0; i < grades.length; i++) {
+      from = grades[i];
+      to = grades[i + 1];
+
+      labels.push(
+        '<li><span class="swatch" style="background:' + getColor(from + 1) + '"></span> ' +
+        from + (to ? '&ndash;' + to : '+')) + '</li>';
+    }
+
+    return '<span>People per square mile</span><ul>' + labels.join('') + '</ul>';
+  }*/
+    // ADD THE REFERENCE OVERLAY (THE TOP OF THE SANDWICH) HERE:
+    var topPane = mapdataviz._createPane('leaflet-top-pane', mapdataviz.getPanes().mapPane);
+    var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
+      maxZoom: 17,
+      opacity: 0.4
+    }).addTo(mapdataviz);
+    topPane.appendChild(topLayer.getContainer());
+    topLayer.setZIndex(7);
+    });
+  </script>
 </body>
 </html>
