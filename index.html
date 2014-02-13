@@ -108,6 +108,15 @@
   var popup = new L.Popup({
     autoPan: false
   });
+
+  var actVar = $('a.active').attr('id');
+
+  $('.lyr').click(function () {
+    $('.lyr').removeClass('active');
+    $(this).addClass('active');
+    actVar = $(this).attr('id');
+  }
+
   $.getJSON('sactree_zips.json', function(data) {
     var zips_geojson = topojson.feature(data, data.objects.zips).features;
     //var blockgroups_geojson = topojson.feature(data, data.objects.blockgroups).features;
@@ -123,13 +132,24 @@
         opacity: 0.2,
         color: 'black',
         fillOpacity: 0.95,
-        fillColor: getColor(feature.properties.Percent_TC)
+        //insert variable here:
+        fillColor: getColor(feature.properties. + actVar)
       };
     }
     // get color depending on population density value
 
     function getColor(d) {
-      return d > 33 ? '#588125' : d > 23 ? '#729B3F' : d > 15 ? '#8BB458' : d > 9 ? '#A5CE72' : d > 4 ? '#BEE78B' : d > 0.5 ? '#D7FFA4' : '#fff';
+
+      //if class = tree, do this:
+      return d > 33 ? '#588125' 
+        : d > 23 ? '#729B3F' 
+        : d > 15 ? '#8BB458' 
+        : d > 9 ? '#A5CE72' 
+        : d > 4 ? '#BEE78B' 
+        : d > 0.5 ? '#D7FFA4' 
+        : '#fff';
+
+      //else
     }
 
     function onEachFeature(feature, layer) {
@@ -144,7 +164,7 @@
     function mousemove(e) {
       var layer = e.target;
       popup.setLatLng(e.latlng);
-      popup.setContent('<div class="marker-title">' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</div>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '% Tree Canopy');
+      popup.setContent('<div class="marker-title">' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</div>' + Math.round(layer.feature.properties. + actVar).toFixed(0) + $('.active').attr('name'));
       if (!popup._map) popup.openOn(mapdataviz);
       window.clearTimeout(closeTooltip);
       // highlight feature
