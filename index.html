@@ -109,13 +109,22 @@
     autoPan: false
   });
 
+  // ADD THE REFERENCE OVERLAY (THE TOP OF THE SANDWICH) HERE:
+    var topPane = mapdataviz._createPane('leaflet-top-pane', mapdataviz.getPanes().mapPane);
+    var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
+      maxZoom: 17,
+      opacity: 0.4
+    }).addTo(mapdataviz);
+    topPane.appendChild(topLayer.getContainer());
+    topLayer.setZIndex(7);
+
   var actVar = $('a.active').attr('id');
 
-  $('.lyr').click(function () {
+  /*$('.lyr').click(function () {
     $('.lyr').removeClass('active');
     $(this).addClass('active');
     actVar = $(this).attr('id');
-  }
+  }*/
 
   $.getJSON('sactree_zips.json', function(data) {
     var zips_geojson = topojson.feature(data, data.objects.zips).features;
@@ -133,11 +142,10 @@
         color: 'black',
         fillOpacity: 0.95,
         //insert variable here:
-        fillColor: getColor(feature.properties. + actVar)
+        fillColor: getColor(feature.properties.Percent_TC)
       };
     }
-    // get color depending on population density value
-
+    
     function getColor(d) {
 
       //if class = tree, do this:
@@ -164,7 +172,7 @@
     function mousemove(e) {
       var layer = e.target;
       popup.setLatLng(e.latlng);
-      popup.setContent('<div class="marker-title">' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</div>' + Math.round(layer.feature.properties. + actVar).toFixed(0) + $('.active').attr('name'));
+      popup.setContent('<div class="marker-title">' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</div>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + "% Canopy");
       if (!popup._map) popup.openOn(mapdataviz);
       window.clearTimeout(closeTooltip);
       // highlight feature
@@ -188,14 +196,7 @@
     function zoomToFeature(e) {
       mapdataviz.fitBounds(e.target.getBounds());
     }
-    // ADD THE REFERENCE OVERLAY (THE TOP OF THE SANDWICH) HERE:
-    var topPane = mapdataviz._createPane('leaflet-top-pane', mapdataviz.getPanes().mapPane);
-    var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
-      maxZoom: 17,
-      opacity: 0.4
-    }).addTo(mapdataviz);
-    topPane.appendChild(topLayer.getContainer());
-    topLayer.setZIndex(7);
+    
   });
   </script>
 </body>
