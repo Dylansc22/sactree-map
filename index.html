@@ -104,6 +104,7 @@
 <script src="http://d3js.org/topojson.v1.min.js"></script> 
 
 <script>
+  // Create map
   var mapdataviz = L.mapbox.map('map', 'landplanner.map-khn9uycz').setView([38.574, -121.384], 10);
   var popup = new L.Popup({
     autoPan: false
@@ -119,85 +120,134 @@
     topLayer.setZIndex(7);
 
   var actVar = $('a.active').attr('id');
+  console.log(actVar);
+  var actLayer = 'layer.feature.properties.' + actVar;
+  console.log(actLayer);
+  var actFeature = 'feature.properties.' + actVar;
+  console.log(actFeature);
 
-  /*$('.lyr').click(function () {
+  $(function() { 
+  var loadData = function() {
+    $.getJSON('sactree_zips.json', function(data) {
+      console.log('json loaded!')
+      var zips_geojson = topojson.feature(data, data.objects.zips).features;
+      console.log(zips_geojson);
+      var zipsLayer = L.geoJson(zips_geojson, {
+        style: getStyle,
+        onEachFeature: onEachFeature
+      }).addTo(mapdataviz);
+      console.log(zipsLayer);
+
+      function getStyle(feature) {
+        return {
+          weight: 1,
+          opacity: 0.2,
+          color: 'black',
+          fillOpacity: 0.95,
+          fillColor: getColor(actFeature)
+        };
+      }
+      
+      function getColor(d) {
+
+        if (actVar == 'Percent_TC') {
+          return d > 33 ? '#588125' 
+            : d > 23 ? '#729B3F' 
+            : d > 15 ? '#8BB458' 
+            : d > 9 ? '#A5CE72' 
+            : d > 4 ? '#BEE78B' 
+            : d > 0.5 ? '#D7FFA4' 
+            : '#fff';
+        }
+
+        if (actVar == 'mean_bmi') {
+          return d > 31 ? '#000080' 
+            : d > 29 ? '#523494' 
+            : d > 27 ? '#8163a8' 
+            : d > 25 ? '#ac94bb' 
+            : d > 22 ? '#d5c9ce' 
+            : d > 20 ? '#ffffe0' 
+            : '#fff';
+        }
+
+        else {
+          return d > 0.8 ? '#000080' 
+            : d > 0.6 ? '#523494' 
+            : d > 0.5 ? '#8163a8' 
+            : d > 0.4 ? '#ac94bb' 
+            : d > 0.25 ? '#d5c9ce' 
+            : d > 0.1 ? '#ffffe0' 
+            : '#fff';
+        }
+      }
+
+      function onEachFeature(feature, layer) {
+        layer.on({
+          mousemove: mousemove,
+          mouseout: mouseout,
+          click: zoomToFeature
+        });
+      }
+      var closeTooltip;
+
+      function mousemove(e) {
+        var layer = e.target;
+        popup.setLatLng(e.latlng);
+
+        if (actVar == 'Percent_TC') {
+          popup.setContent('<div class="marker-title">' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</div>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + "% Tree Canopy");
+        }
+
+        if (actVar == 'mean_bmi') {
+          popup.setContent('<div class="marker-title">' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</div>' + "Mean BMI: " + Math.round(layer.feature.properties.mean_bmi).toFixed(0));
+        }
+
+        else {
+          popup.setContent('<div class="marker-title">' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</div>' + Math.round(actLayer * 100).toFixed(0) + " " + $('.active').text());
+        }
+        if (!popup._map) popup.openOn(mapdataviz);
+        window.clearTimeout(closeTooltip);
+        // highlight feature
+        layer.setStyle({
+          weight: 3,
+          opacity: 0.3,
+          fillOpacity: 0.3
+        });
+        if (!L.Browser.ie && !L.Browser.opera) {
+          layer.bringToFront();
+        }
+      }
+
+      function mouseout(e) {
+        zipsLayer.resetStyle(e.target);
+        closeTooltip = window.setTimeout(function() {
+          mapdataviz.closePopup();
+        }, 100);
+      }
+
+      function zoomToFeature(e) {
+        mapdataviz.fitBounds(e.target.getBounds());
+      }
+      
+    });
+   };
+
+  // click function
+  $('.lyr').click(function () {
     $('.lyr').removeClass('active');
+    //mapdataviz.removeLayer(zipslayer);
     $(this).addClass('active');
     actVar = $(this).attr('id');
-  }*/
-
-  $.getJSON('sactree_zips.json', function(data) {
-    var zips_geojson = topojson.feature(data, data.objects.zips).features;
-    //var blockgroups_geojson = topojson.feature(data, data.objects.blockgroups).features;
-    // statesData comes from the 'us-states.js' script included above
-    var zipsLayer = L.geoJson(zips_geojson, {
-      style: getStyle,
-      onEachFeature: onEachFeature
-    }).addTo(mapdataviz);
-
-    function getStyle(feature) {
-      return {
-        weight: 1,
-        opacity: 0.2,
-        color: 'black',
-        fillOpacity: 0.95,
-        //insert variable here:
-        fillColor: getColor(feature.properties.Percent_TC)
-      };
-    }
-    
-    function getColor(d) {
-
-      //if class = tree, do this:
-      return d > 33 ? '#588125' 
-        : d > 23 ? '#729B3F' 
-        : d > 15 ? '#8BB458' 
-        : d > 9 ? '#A5CE72' 
-        : d > 4 ? '#BEE78B' 
-        : d > 0.5 ? '#D7FFA4' 
-        : '#fff';
-
-      //else
-    }
-
-    function onEachFeature(feature, layer) {
-      layer.on({
-        mousemove: mousemove,
-        mouseout: mouseout,
-        click: zoomToFeature
-      });
-    }
-    var closeTooltip;
-
-    function mousemove(e) {
-      var layer = e.target;
-      popup.setLatLng(e.latlng);
-      popup.setContent('<div class="marker-title">' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</div>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + "% Canopy");
-      if (!popup._map) popup.openOn(mapdataviz);
-      window.clearTimeout(closeTooltip);
-      // highlight feature
-      layer.setStyle({
-        weight: 3,
-        opacity: 0.3,
-        fillOpacity: 0.3
-      });
-      if (!L.Browser.ie && !L.Browser.opera) {
-        layer.bringToFront();
-      }
-    }
-
-    function mouseout(e) {
-      zipsLayer.resetStyle(e.target);
-      closeTooltip = window.setTimeout(function() {
-        mapdataviz.closePopup();
-      }, 100);
-    }
-
-    function zoomToFeature(e) {
-      mapdataviz.fitBounds(e.target.getBounds());
-    }
-    
+    actLayer = 'layer.feature.properties.' + actVar;
+    actFeature = 'feature.properties.' + actVar;
+    loadData();
   });
+
+
+  // init
+  loadData();
+
+});
   </script>
 </body>
 </html>
