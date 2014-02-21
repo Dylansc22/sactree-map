@@ -32,7 +32,10 @@
 <script src="http://d3js.org/topojson.v1.min.js"></script> 
 
 <script>
-  var mapdataviz, popup;
+  var mapdataviz, 
+      popup,
+      zips_geojson,
+      zipsLayer;
 
   // Creat wrapper function
   $(function() { 
@@ -66,9 +69,9 @@
       $.getJSON('sactree_zips.json', function(data) {
         console.log('json loaded!')
         // Convert the topojson to geojson
-        var zips_geojson = topojson.feature(data, data.objects.zips).features;
+        zips_geojson = topojson.feature(data, data.objects.zips).features;
         // Create leaflet vector layer and add it to the map
-        var zipsLayer = L.geoJson(zips_geojson, {
+        zipsLayer = L.geoJson(zips_geojson, {
           style: getStyle,
           onEachFeature: onEachFeature
         }).addTo(mapdataviz);
@@ -171,7 +174,7 @@
     $('.lyr').click(function () {
       $('.lyr').removeClass('active');
       // todo - remove old polygons before reload:
-      mapdataviz.remove();
+      zipsLayer.remove();
       $(this).addClass('active');
       // Redefine the theme variables based on the clicked button
       actVar = $(this).attr('id');
