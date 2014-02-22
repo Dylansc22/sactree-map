@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,18 +12,18 @@
 </head>
 <body>
 
-<ul id='map-ui'>
-  <li><a id="Percent_TC" class="lyr tree">% Tree Canopy</a></li>
-  <li><a id="mean_bmi" class="lyr health">Mean BMI</a></li>
-  <li><a id="per_ovw_ob" class="lyr health">% Overweight or Obese</a></li>
-  <li><a id="per_ob" class="lyr health">% Obese</a></li>
-  <li><a id="per_mvpa" class="lyr health active">% w/ >150min MVPA/wk</a></li>
-  <li><a id="per_hi_bp" class="lyr health">% w/ High Blood Pressure</a></li>
-  <li><a id="per_type2" class="lyr health">% w/ Type 2 Diabetes</a></li>
-  <li><a id="per_frpr" class="lyr health">% in Fair/Poor health</a></li>
-  <li><a id="per_asthma" class="lyr health">% w/ Asthma</a></li>
-</ul>
 <div id='map'></div>
+
+<style>
+
+  /* Style the layer switcher here (maybe not radio buttons?)*/
+  label {
+    height:30px;
+    font-family: 'Rokkitt', serif;
+    font-size: 18px !important ;
+  }
+
+</style>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
 <script src='http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
@@ -32,163 +31,505 @@
 <script src="http://d3js.org/topojson.v1.min.js"></script> 
 
 <script>
-  var mapdataviz, 
-      popup,
-      zips_geojson,
-      zipsLayer;
 
-  // Creat wrapper function
-  $(function() { 
-
-    // Create Data loading function, repeatable on page load and on button click
-    var loadData = function() {
-
-      // Create map
-      mapdataviz = L.mapbox.map('map', 'landplanner.map-khn9uycz').setView([38.574, -121.384], 10);
-      // Create Popup
-      popup = new L.Popup({
-        autoPan: false
-      });
-
-      var hash = L.hash(mapdataviz);
-
-      // ADD THE REFERENCE OVERLAY
-        var topPane = mapdataviz._createPane('leaflet-top-pane', mapdataviz.getPanes().mapPane);
-        var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
-          maxZoom: 17,
-          opacity: 0.4
-        }).addTo(mapdataviz);
-        topPane.appendChild(topLayer.getContainer());
-        topLayer.setZIndex(7);
-
-      // Add and define the variables that carry theme info to the layer constructor
-      var actVar = $('a.active').attr('id');
-      var actLayer = 'layer.feature.properties.' + actVar;
-      var actFeature = 'feature.properties.' + actVar;
-      //Get the topojson
-      $.getJSON('sactree_zips.json', function(data) {
-        console.log('json loaded!')
+  $.getJSON('sactree_zips.json', function(data) {
         // Convert the topojson to geojson
-        zips_geojson = topojson.feature(data, data.objects.zips).features;
+        var zips_geojson = topojson.feature(data, data.objects.zips).features;
         // Create leaflet vector layer and add it to the map
-        zipsLayer = L.geoJson(zips_geojson, {
-          style: getStyle,
-          onEachFeature: onEachFeature
-        }).addTo(mapdataviz);
+        popup = new L.Popup({
+          autoPan: false
+        });
+        var closeTooltip;
 
-        // Define the vector styles
-        function getStyle(feature) {
+        
+        var mean_bmi = L.geoJson(zips_geojson, {
+          style: getStyle2,
+          onEachFeature: onEachFeature2
+        });
+
+        var per_ovw_ob = L.geoJson(zips_geojson, {
+          style: getStyle3,
+          onEachFeature: onEachFeature3
+        });
+
+        var per_ob = L.geoJson(zips_geojson, {
+          style: getStyle4,
+          onEachFeature: onEachFeature4
+        });
+
+        var per_mvpa = L.geoJson(zips_geojson, {
+          style: getStyle5,
+          onEachFeature: onEachFeature5
+        });
+
+        var per_hi_bp = L.geoJson(zips_geojson, {
+          style: getStyle6,
+          onEachFeature: onEachFeature6
+        });
+
+        var per_type2 = L.geoJson(zips_geojson, {
+          style: getStyle7,
+          onEachFeature: onEachFeature7
+        });
+
+        var per_frpr = L.geoJson(zips_geojson, {
+          style: getStyle8,
+          onEachFeature: onEachFeature8
+        });
+
+        var per_asthma = L.geoJson(zips_geojson, {
+          style: getStyle9,
+          onEachFeature: onEachFeature9
+        });
+
+        var Percent_TC = L.geoJson(zips_geojson, {
+          style: getStyle1,
+          onEachFeature: onEachFeature1
+        });
+
+        
+        // 1 - Percent_TC
+        function getStyle1(feature) {
           return {
-            weight: 1,
-            opacity: 0.2,
-            color: 'black',
-            fillOpacity: 0.95,
-            fillColor: getColor(eval(actFeature))
+            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor1(feature.properties.Percent_TC)
           };
         }
-        
-        // Define the polygon fill, conditional on theme and value
-        function getColor(d) {
+        function getColor1(d) {
+          return d > 33 ? '#588125' 
+            : d > 23 ? '#729B3F' 
+            : d > 15 ? '#8BB458' 
+            : d > 9 ? '#A5CE72' 
+            : d > 4 ? '#BEE78B' 
+            : d > 0.5 ? '#D7FFA4' 
+            : '#fff';
+        }
+        function onEachFeature1(feature, layer) {
+          layer.on({
+            mousemove: mousemove1, mouseout: mouseout1
+          });
+        }
+        function mousemove1(e) {
+          var layer = e.target;
+          popup.setLatLng(e.latlng);
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
+          if (!popup._map) popup.openOn(map);
+          window.clearTimeout(closeTooltip);
+            // highlight feature on mouseover
+            layer.setStyle({
+              weight: 3,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            });
+          if (!L.Browser.ie && !L.Browser.opera) {
+              layer.bringToFront();
+            }
+        }
+        function mouseout1(e) {
+          Percent_TC.resetStyle(e.target);
+          closeTooltip = window.setTimeout(function() {
+            map.closePopup();
+          }, 100);
+        }
+        // End 1
 
-          if (actVar == 'Percent_TC') {
-            return d > 33 ? '#588125' 
-              : d > 23 ? '#729B3F' 
-              : d > 15 ? '#8BB458' 
-              : d > 9 ? '#A5CE72' 
-              : d > 4 ? '#BEE78B' 
-              : d > 0.5 ? '#D7FFA4' 
-              : '#fff';
-          }
-
-          if (actVar == 'mean_bmi') {
-            return d > 31 ? '#4b75b3' 
-              : d > 29 ? '#523494' 
+        // 2 - mean_bmi
+        function getStyle2(feature) {
+          return {
+            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor2(feature.properties.mean_bmi)
+          };
+        }
+        function getColor2(d) {
+          return d > 30 ? '#391B7B' 
+              : d > 28 ? '#523494' 
               : d > 27 ? '#99a9c6' 
               : d > 25 ? '#bcc5cf' 
-              : d > 22 ? '#dde1d8' 
-              : d > 20 ? '#ffffe0' 
+              : d > 24 ? '#dde1d8' 
+              : d > 21 ? '#ffffe0' 
               : '#fff';
-          }
+        }
+        function onEachFeature2(feature, layer) {
+          layer.on({
+            mousemove: mousemove2, mouseout: mouseout2
+          });
+        }
+        function mousemove2(e) {
+          var layer = e.target;
+          popup.setLatLng(e.latlng);
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Mean BMI: <b>' + layer.feature.properties.mean_bmi + '</b>');
+          if (!popup._map) popup.openOn(map);
+          window.clearTimeout(closeTooltip);
+            // highlight feature on mouseover
+            layer.setStyle({
+              weight: 3,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            });
+          if (!L.Browser.ie && !L.Browser.opera) {
+              layer.bringToFront();
+            }
+        }
+        function mouseout2(e) {
+          mean_bmi.resetStyle(e.target);
+          closeTooltip = window.setTimeout(function() {
+            map.closePopup();
+          }, 100);
+        }
+        // End 2
 
-          else {
-            return d > 0.7 ? '#4b75b3' 
+        // 3 - per_ovw_ob
+        function getStyle3(feature) {
+          return {
+            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor3(feature.properties.per_ovw_ob)
+          };
+        }
+        function getColor3(d) {
+          return d > 0.7 ? '#391B7B' 
+              : d > 0.6 ? '#523494' 
+              : d > 0.5 ? '#99a9c6' 
+              : d > 0.3 ? '#bcc5cf' 
+              : d > 0.15 ? '#dde1d8' 
+              : d > 0.02 ? '#ffffe0' 
+              : '#fff';
+        }
+        function onEachFeature3(feature, layer) {
+          layer.on({
+            mousemove: mousemove3, mouseout: mouseout3
+          });
+        }
+        function mousemove3(e) {
+          var layer = e.target;
+          popup.setLatLng(e.latlng);
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Overweight or Obese: <b>' + Math.round(layer.feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b>');
+          if (!popup._map) popup.openOn(map);
+          window.clearTimeout(closeTooltip);
+            // highlight feature on mouseover
+            layer.setStyle({
+              weight: 3,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            });
+          if (!L.Browser.ie && !L.Browser.opera) {
+              layer.bringToFront();
+            }
+        }
+        function mouseout3(e) {
+          per_ovw_ob.resetStyle(e.target);
+          closeTooltip = window.setTimeout(function() {
+            map.closePopup();
+          }, 100);
+        }
+        // End 3
+
+        // 4 - per_ob
+        function getStyle4(feature) {
+          return {
+            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor4(feature.properties.per_ob)
+          };
+        }
+        function getColor4(d) {
+          return d > 0.6 ? '#391B7B' 
+              : d > 0.4 ? '#523494' 
+              : d > 0.25 ? '#99a9c6' 
+              : d > 0.15 ? '#bcc5cf' 
+              : d > 0.08 ? '#dde1d8' 
+              : d > 0.02 ? '#ffffe0' 
+              : '#fff';
+        }
+        function onEachFeature4(feature, layer) {
+          layer.on({
+            mousemove: mousemove4, mouseout: mouseout4
+          });
+        }
+        function mousemove4(e) {
+          var layer = e.target;
+          popup.setLatLng(e.latlng);
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Obese: <b>' + Math.round(layer.feature.properties.per_ob * 100).toFixed(0) + '%</b>');
+          if (!popup._map) popup.openOn(map);
+          window.clearTimeout(closeTooltip);
+            // highlight feature on mouseover
+            layer.setStyle({
+              weight: 3,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            });
+          if (!L.Browser.ie && !L.Browser.opera) {
+              layer.bringToFront();
+            }
+        }
+        function mouseout4(e) {
+          per_ob.resetStyle(e.target);
+          closeTooltip = window.setTimeout(function() {
+            map.closePopup();
+          }, 100);
+        }
+        // End 4
+
+        // 5 - per_mvpa
+        function getStyle5(feature) {
+          return {
+            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor5(feature.properties.per_mvpa)
+          };
+        }
+        function getColor5(d) {
+          return d > 0.7 ? '#391B7B' 
               : d > 0.5 ? '#523494' 
-              : d > 0.4 ? '#99a9c6' 
-              : d > 0.25 ? '#bcc5cf' 
+              : d > 0.3 ? '#99a9c6' 
+              : d > 0.2 ? '#bcc5cf' 
               : d > 0.1 ? '#dde1d8' 
               : d > 0.02 ? '#ffffe0' 
               : '#fff';
-          }
         }
-
-        // Define the interactivity
-        function onEachFeature(feature, layer) {
+        function onEachFeature5(feature, layer) {
           layer.on({
-            mousemove: mousemove,
-            mouseout: mouseout,
-            click: zoomToFeature
+            mousemove: mousemove5, mouseout: mouseout5
           });
         }
-        var closeTooltip;
-
-        // Define the popup content, also conditional on theme and value 
-        function mousemove(e) {
+        function mousemove5(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
-
-          if (actVar == 'Percent_TC' || actVar == 'mean_bmi') {
-            popup.setContent('<div class="marker-title">' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</div>' + $('.active').text() + ": <b>" + Math.round(eval(actLayer)).toFixed(0) + "</b>");
-          }
-
-          else {
-            popup.setContent('<div class="marker-title">' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</div>' + Math.round(eval(actLayer) * 100).toFixed(0) + $('.active').text());
-          }
-          if (!popup._map) popup.openOn(mapdataviz);
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>>150mins of MVPA/wk: <b>' + Math.round(layer.feature.properties.per_mvpa * 100).toFixed(0) + '%</b>');
+          if (!popup._map) popup.openOn(map);
           window.clearTimeout(closeTooltip);
-          // highlight feature on mouseover
-          layer.setStyle({
-            weight: 3,
-            opacity: 0.3,
-            fillOpacity: 0.3
-          });
+            // highlight feature on mouseover
+            layer.setStyle({
+              weight: 3,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            });
           if (!L.Browser.ie && !L.Browser.opera) {
-            layer.bringToFront();
-          }
+              layer.bringToFront();
+            }
         }
-
-        function mouseout(e) {
-          zipsLayer.resetStyle(e.target);
+        function mouseout5(e) {
+          per_mvpa.resetStyle(e.target);
           closeTooltip = window.setTimeout(function() {
-            mapdataviz.closePopup();
+            map.closePopup();
           }, 100);
         }
-
-        function zoomToFeature(e) {
-          mapdataviz.fitBounds(e.target.getBounds());
-        }
+        // End 5
         
+          // 6 - per_mvpa
+        function getStyle6(feature) {
+          return {
+            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor6(feature.properties.per_hi_bp)
+          };
+        }
+        function getColor6(d) {
+          return d > 0.4 ? '#391B7B' 
+              : d > 0.3 ? '#523494' 
+              : d > 0.2 ? '#99a9c6' 
+              : d > 0.1 ? '#bcc5cf' 
+              : d > 0.07 ? '#dde1d8' 
+              : d > 0.02 ? '#ffffe0' 
+              : '#fff';
+        }
+        function onEachFeature6(feature, layer) {
+          layer.on({
+            mousemove: mousemove6, mouseout: mouseout6
+          });
+        }
+        function mousemove6(e) {
+          var layer = e.target;
+          popup.setLatLng(e.latlng);
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>High Blood Pressure: <b>' + Math.round(layer.feature.properties.per_hi_bp * 100).toFixed(0) + '%</b>');
+          if (!popup._map) popup.openOn(map);
+          window.clearTimeout(closeTooltip);
+            // highlight feature on mouseover
+            layer.setStyle({
+              weight: 3,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            });
+          if (!L.Browser.ie && !L.Browser.opera) {
+              layer.bringToFront();
+            }
+        }
+        function mouseout6(e) {
+          per_hi_bp.resetStyle(e.target);
+          closeTooltip = window.setTimeout(function() {
+            map.closePopup();
+          }, 100);
+        }
+        // End 6
+
+        // 7 - per_type2
+        function getStyle7(feature) {
+          return {
+            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor7(feature.properties.per_type2)
+          };
+        }
+        function getColor7(d) {
+          return d > 0.1 ? '#391B7B' 
+              : d > 0.09 ? '#523494' 
+              : d > 0.07 ? '#99a9c6' 
+              : d > 0.05 ? '#bcc5cf' 
+              : d > 0.03 ? '#dde1d8' 
+              : d > 0.005 ? '#ffffe0' 
+              : '#fff';
+        }
+        function onEachFeature7(feature, layer) {
+          layer.on({
+            mousemove: mousemove7, mouseout: mouseout7
+          });
+        }
+        function mousemove7(e) {
+          var layer = e.target;
+          popup.setLatLng(e.latlng);
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Type II Diabetes: <b>' + Math.round(layer.feature.properties.per_type2 * 100).toFixed(0) + '%</b>');
+          if (!popup._map) popup.openOn(map);
+          window.clearTimeout(closeTooltip);
+            // highlight feature on mouseover
+            layer.setStyle({
+              weight: 3,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            });
+          if (!L.Browser.ie && !L.Browser.opera) {
+              layer.bringToFront();
+            }
+        }
+        function mouseout7(e) {
+          per_type2.resetStyle(e.target);
+          closeTooltip = window.setTimeout(function() {
+            map.closePopup();
+          }, 100);
+        }
+        // End 7
+
+        // 8 - per_frpr
+        function getStyle8(feature) {
+          return {
+            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor8(feature.properties.per_frpr)
+          };
+        }
+        function getColor8(d) {
+          return d > 0.5 ? '#391B7B' 
+              : d > 0.3 ? '#523494' 
+              : d > 0.2 ? '#99a9c6' 
+              : d > 0.1 ? '#bcc5cf' 
+              : d > 0.05 ? '#dde1d8' 
+              : d > 0.02 ? '#ffffe0' 
+              : '#fff';
+        }
+        function onEachFeature8(feature, layer) {
+          layer.on({
+            mousemove: mousemove8, mouseout: mouseout8
+          });
+        }
+        function mousemove8(e) {
+          var layer = e.target;
+          popup.setLatLng(e.latlng);
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Fair or Poor Health: <b>' + Math.round(layer.feature.properties.per_frpr * 100).toFixed(0) + '%</b>');
+          if (!popup._map) popup.openOn(map);
+          window.clearTimeout(closeTooltip);
+            // highlight feature on mouseover
+            layer.setStyle({
+              weight: 3,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            });
+          if (!L.Browser.ie && !L.Browser.opera) {
+              layer.bringToFront();
+            }
+        }
+        function mouseout8(e) {
+          per_frpr.resetStyle(e.target);
+          closeTooltip = window.setTimeout(function() {
+            map.closePopup();
+          }, 100);
+        }
+        // End 8
+
+        // 9 - per_asthma
+        function getStyle9(feature) {
+          return {
+            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor9(feature.properties.per_asthma)
+          };
+        }
+        function getColor9(d) {
+          return d > 0.3 ? '#391B7B' 
+              : d > 0.15 ? '#523494' 
+              : d > 0.12 ? '#99a9c6' 
+              : d > 0.1 ? '#bcc5cf' 
+              : d > 0.07 ? '#dde1d8' 
+              : d > 0.02 ? '#ffffe0' 
+              : '#fff';
+        }
+        function onEachFeature9(feature, layer) {
+          layer.on({
+            mousemove: mousemove9, mouseout: mouseout9
+          });
+        }
+        function mousemove9(e) {
+          var layer = e.target;
+          popup.setLatLng(e.latlng);
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Asthma: <b>' + Math.round(layer.feature.properties.per_asthma * 100).toFixed(0) + '%</b>');
+          if (!popup._map) popup.openOn(map);
+          window.clearTimeout(closeTooltip);
+            // highlight feature on mouseover
+            layer.setStyle({
+              weight: 3,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            });
+          if (!L.Browser.ie && !L.Browser.opera) {
+              layer.bringToFront();
+            }
+        }
+        function mouseout9(e) {
+          per_asthma.resetStyle(e.target);
+          closeTooltip = window.setTimeout(function() {
+            map.closePopup();
+          }, 100);
+        }
+        // End 9
+
+
+//////////MAP DEF //////////////////
+        map = L.map("map", {
+            zoom: 10,
+            center: [38.574, -121.384],
+            layers: [mean_bmi, per_ovw_ob, per_ob, per_mvpa, per_hi_bp, per_type2, per_frpr, per_asthma, Percent_TC]
+        });
+
+        // Larger screens get expanded layer control
+        if (document.body.clientWidth <= 767) {
+            var isCollapsed = true;
+        } else {
+            var isCollapsed = false;
+        };
+
+        var baseLayer = new L.mapbox.tileLayer('landplanner.map-khn9uycz').addTo(map);
+
+        var hash = L.hash(map);
+
+        // ADD THE REFERENCE OVERLAY
+        var topPane = map._createPane('leaflet-top-pane', map.getPanes().mapPane);
+        var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
+          maxZoom: 17,
+          opacity: 0.4
+        }).addTo(map);
+        topPane.appendChild(topLayer.getContainer());
+        topLayer.setZIndex(7);
+
+        var baseLayers = {
+            "Mean BMI": mean_bmi, 
+            "% Overweight or Obese": per_ovw_ob, 
+            "% Obese": per_ob, 
+            "% w/ >150min MVPA/wk": per_mvpa, 
+            "% w/ High Blood Pressure": per_hi_bp, 
+            "% w/ Type 2 Diabetes": per_type2, 
+            "% in Fair/Poor Health": per_frpr, 
+            "% w/ Asthma": per_asthma,
+            "% Treecover": Percent_TC
+        };
+
+        var layerControl = L.control.layers(baseLayers, null,{
+            collapsed: isCollapsed
+        }).addTo(map);
+
       });
-     };
 
-    // Define the reload-on-click function
-    $('.lyr').click(function () {
-      $('.lyr').removeClass('active');
-      // todo - remove old polygons before reload:
-      zipsLayer.remove();
-      $(this).addClass('active');
-      // Redefine the theme variables based on the clicked button
-      actVar = $(this).attr('id');
-      actLayer = 'layer.feature.properties.' + actVar;
-      actFeature = 'feature.properties.' + actVar;
-      // Fire the big data loading function
-      loadData();
-    });
-
-
-    // init
-    loadData();
-
-  });
-  </script>
+</script>
 </body>
 </html>
