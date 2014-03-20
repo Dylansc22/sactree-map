@@ -32,7 +32,7 @@
 
 <script>
 
-  $.getJSON('sactree_zips.json', function(data) {
+  $.getJSON('sactree_zips2.json', function(data) {
         // Convert the topojson to geojson
         var zips_geojson = topojson.feature(data, data.objects.zips).features;
         // Create leaflet vector layer and add it to the map
@@ -82,6 +82,11 @@
           onEachFeature: onEachFeature9
         });
 
+        var soc_cohes = L.geoJson(zips_geojson, {
+          style: getStyle10,
+          onEachFeature: onEachFeature10
+        });
+
         var Percent_TC = L.geoJson(zips_geojson, {
           style: getStyle1,
           onEachFeature: onEachFeature1
@@ -95,12 +100,12 @@
           };
         }
         function getColor1(d) {
-          return d > 33 ? '#588125' 
-            : d > 23 ? '#729B3F' 
-            : d > 15 ? '#8BB458' 
-            : d > 9 ? '#A5CE72' 
-            : d > 4 ? '#BEE78B' 
-            : d > 0.5 ? '#D7FFA4' 
+          return d > 30.6917 ? '#588125' 
+            : d > 23.6632 ? '#729B3F' 
+            : d > 15.7562 ? '#8BB458' 
+            : d > 9.8709 ? '#A5CE72' 
+            : d > 5.4646 ? '#BEE78B' 
+            : d > 1.7676 ? '#D7FFA4' 
             : '#fff';
         }
         function onEachFeature1(feature, layer) {
@@ -139,13 +144,13 @@
           };
         }
         function getColor2(d) {
-          return d > 30 ? '#391B7B' 
-              : d > 28 ? '#523494' 
-              : d > 27 ? '#99a9c6' 
-              : d > 25 ? '#bcc5cf' 
-              : d > 24 ? '#dde1d8' 
-              : d > 21 ? '#ffffe0' 
-              : '#fff';
+          return d > 30.4000 ? '#391b7b' 
+              : d > 28.7100 ? '#5d3e91' 
+              : d > 27.4300 ? '#7e62a7' 
+              : d > 26.3700 ? '#9e88bd' 
+              : d > 25.1900 ? '#beaed2' 
+              : d > 23.9100 ? '#ded6e9' 
+              : '#ffffff';
         }
         function onEachFeature2(feature, layer) {
           layer.on({
@@ -155,7 +160,7 @@
         function mousemove2(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Mean BMI: <b>' + layer.feature.properties.mean_bmi + '</b>');
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Mean BMI: <b>' + layer.feature.properties.mean_bmi + '</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
           if (!popup._map) popup.openOn(map);
           window.clearTimeout(closeTooltip);
             // highlight feature on mouseover
@@ -183,13 +188,13 @@
           };
         }
         function getColor3(d) {
-          return d > 0.7 ? '#391B7B' 
-              : d > 0.6 ? '#523494' 
-              : d > 0.5 ? '#99a9c6' 
-              : d > 0.3 ? '#bcc5cf' 
-              : d > 0.15 ? '#dde1d8' 
-              : d > 0.02 ? '#ffffe0' 
-              : '#fff';
+          return d > 0.8500 ? '#391b7b' 
+              : d > 0.7100 ? '#5d3e91' 
+              : d > 0.6200 ? '#7e62a7' 
+              : d > 0.5400 ? '#9e88bd' 
+              : d > 0.4500 ? '#beaed2' 
+              : d > 0.3700 ? '#ded6e9' 
+              : '#ffffff';
         }
         function onEachFeature3(feature, layer) {
           layer.on({
@@ -199,7 +204,7 @@
         function mousemove3(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Overweight or Obese: <b>' + Math.round(layer.feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b>');
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Overweight or Obese: <b>' + Math.round(layer.feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
           if (!popup._map) popup.openOn(map);
           window.clearTimeout(closeTooltip);
             // highlight feature on mouseover
@@ -227,13 +232,13 @@
           };
         }
         function getColor4(d) {
-          return d > 0.6 ? '#391B7B' 
-              : d > 0.4 ? '#523494' 
-              : d > 0.25 ? '#99a9c6' 
-              : d > 0.15 ? '#bcc5cf' 
-              : d > 0.08 ? '#dde1d8' 
-              : d > 0.02 ? '#ffffe0' 
-              : '#fff';
+           return d > 0.4700 ? '#391b7b' 
+              : d > 0.3800 ? '#5d3e91' 
+              : d > 0.3000 ? '#7e62a7' 
+              : d > 0.2300 ? '#9e88bd' 
+              : d > 0.1700 ? '#beaed2' 
+              : d > 0.0400 ? '#ded6e9' 
+              : '#ffffff';
         }
         function onEachFeature4(feature, layer) {
           layer.on({
@@ -243,7 +248,7 @@
         function mousemove4(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Obese: <b>' + Math.round(layer.feature.properties.per_ob * 100).toFixed(0) + '%</b>');
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Obese: <b>' + Math.round(layer.feature.properties.per_ob * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
           if (!popup._map) popup.openOn(map);
           window.clearTimeout(closeTooltip);
             // highlight feature on mouseover
@@ -271,13 +276,13 @@
           };
         }
         function getColor5(d) {
-          return d > 0.7 ? '#391B7B' 
-              : d > 0.5 ? '#523494' 
-              : d > 0.3 ? '#99a9c6' 
-              : d > 0.2 ? '#bcc5cf' 
-              : d > 0.1 ? '#dde1d8' 
-              : d > 0.02 ? '#ffffe0' 
-              : '#fff';
+          return d > 0.7500 ? '#391b7b' 
+              : d > 0.6600 ? '#5d3e91' 
+              : d > 0.6000 ? '#7e62a7' 
+              : d > 0.5400 ? '#9e88bd' 
+              : d > 0.4400 ? '#beaed2' 
+              : d > 0.2400 ? '#ded6e9' 
+              : '#ffffff';
         }
         function onEachFeature5(feature, layer) {
           layer.on({
@@ -287,7 +292,7 @@
         function mousemove5(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>>150mins of MVPA/wk: <b>' + Math.round(layer.feature.properties.per_mvpa * 100).toFixed(0) + '%</b>');
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>>150mins of MVPA/wk: <b>' + Math.round(layer.feature.properties.per_mvpa * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
           if (!popup._map) popup.openOn(map);
           window.clearTimeout(closeTooltip);
             // highlight feature on mouseover
@@ -308,20 +313,19 @@
         }
         // End 5
         
-          // 6 - per_mvpa
+          // 6 - per_hi_bp
         function getStyle6(feature) {
           return {
             weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor6(feature.properties.per_hi_bp)
           };
         }
         function getColor6(d) {
-          return d > 0.4 ? '#391B7B' 
-              : d > 0.3 ? '#523494' 
-              : d > 0.2 ? '#99a9c6' 
-              : d > 0.1 ? '#bcc5cf' 
-              : d > 0.07 ? '#dde1d8' 
-              : d > 0.02 ? '#ffffe0' 
-              : '#fff';
+          return d > 0.3400 ? '#391b7b' 
+              : d > 0.2800 ? '#5d3e91' 
+              : d > 0.2200 ? '#7e62a7' 
+              : d > 0.1600 ? '#9e88bd' 
+              : d > 0.100 ? '#beaed2' 
+              : '#ffffff';
         }
         function onEachFeature6(feature, layer) {
           layer.on({
@@ -331,7 +335,7 @@
         function mousemove6(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>High Blood Pressure: <b>' + Math.round(layer.feature.properties.per_hi_bp * 100).toFixed(0) + '%</b>');
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>High Blood Pressure: <b>' + Math.round(layer.feature.properties.per_hi_bp * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
           if (!popup._map) popup.openOn(map);
           window.clearTimeout(closeTooltip);
             // highlight feature on mouseover
@@ -359,13 +363,13 @@
           };
         }
         function getColor7(d) {
-          return d > 0.1 ? '#391B7B' 
-              : d > 0.09 ? '#523494' 
-              : d > 0.07 ? '#99a9c6' 
-              : d > 0.05 ? '#bcc5cf' 
-              : d > 0.03 ? '#dde1d8' 
-              : d > 0.005 ? '#ffffe0' 
-              : '#fff';
+          return d > 0.1600 ? '#391b7b' 
+              : d > 0.0800 ? '#5d3e91' 
+              : d > 0.06000 ? '#7e62a7' 
+              : d > 0.0400 ? '#9e88bd' 
+              : d > 0.0200 ? '#beaed2' 
+              : d > 0.0100 ? '#ded6e9' 
+              : '#ffffff';
         }
         function onEachFeature7(feature, layer) {
           layer.on({
@@ -375,7 +379,7 @@
         function mousemove7(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Type II Diabetes: <b>' + Math.round(layer.feature.properties.per_type2 * 100).toFixed(0) + '%</b>');
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Type II Diabetes: <b>' + Math.round(layer.feature.properties.per_type2 * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
           if (!popup._map) popup.openOn(map);
           window.clearTimeout(closeTooltip);
             // highlight feature on mouseover
@@ -403,13 +407,13 @@
           };
         }
         function getColor8(d) {
-          return d > 0.5 ? '#391B7B' 
-              : d > 0.3 ? '#523494' 
-              : d > 0.2 ? '#99a9c6' 
-              : d > 0.1 ? '#bcc5cf' 
-              : d > 0.05 ? '#dde1d8' 
-              : d > 0.02 ? '#ffffe0' 
-              : '#fff';
+          return d > 0.3600 ? '#391b7b' 
+              : d > 0.2700 ? '#5d3e91' 
+              : d > 0.1700 ? '#7e62a7' 
+              : d > 0.1200 ? '#9e88bd' 
+              : d > 0.0600 ? '#beaed2' 
+              : d > 0.0200 ? '#ded6e9' 
+              : '#ffffff';
         }
         function onEachFeature8(feature, layer) {
           layer.on({
@@ -419,7 +423,7 @@
         function mousemove8(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Fair or Poor Health: <b>' + Math.round(layer.feature.properties.per_frpr * 100).toFixed(0) + '%</b>');
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Fair or Poor Health: <b>' + Math.round(layer.feature.properties.per_frpr * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
           if (!popup._map) popup.openOn(map);
           window.clearTimeout(closeTooltip);
             // highlight feature on mouseover
@@ -447,13 +451,13 @@
           };
         }
         function getColor9(d) {
-          return d > 0.3 ? '#391B7B' 
-              : d > 0.15 ? '#523494' 
-              : d > 0.12 ? '#99a9c6' 
-              : d > 0.1 ? '#bcc5cf' 
-              : d > 0.07 ? '#dde1d8' 
-              : d > 0.02 ? '#ffffe0' 
-              : '#fff';
+          return d > 0.2800 ? '#391b7b' 
+              : d > 0.1700 ? '#5d3e91' 
+              : d > 0.13000 ? '#7e62a7' 
+              : d > 0.100 ? '#9e88bd' 
+              : d > 0.0700 ? '#beaed2' 
+              : d > 0.0200 ? '#ded6e9' 
+              : '#ffffff';
         }
         function onEachFeature9(feature, layer) {
           layer.on({
@@ -463,7 +467,7 @@
         function mousemove9(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Asthma: <b>' + Math.round(layer.feature.properties.per_asthma * 100).toFixed(0) + '%</b>');
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Asthma: <b>' + Math.round(layer.feature.properties.per_asthma * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
           if (!popup._map) popup.openOn(map);
           window.clearTimeout(closeTooltip);
             // highlight feature on mouseover
@@ -484,12 +488,56 @@
         }
         // End 9
 
+        // 10 - soc_cohes
+        function getStyle10(feature) {
+          return {
+            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor10(feature.properties.soc_cohes)
+          };
+        }
+        function getColor10(d) {
+          return d > 0.9380 ? '#391b7b' 
+              : d > 0.8300 ? '#5d3e91' 
+              : d > 0.7320 ? '#7e62a7' 
+              : d > 0.6370 ? '#9e88bd' 
+              : d > 0.5520 ? '#beaed2' 
+              : d > 0.3150 ? '#ded6e9' 
+              : '#ffffff';
+        }
+        function onEachFeature10(feature, layer) {
+          layer.on({
+            mousemove: mousemove10, mouseout: mouseout10
+          });
+        }
+        function mousemove10(e) {
+          var layer = e.target;
+          popup.setLatLng(e.latlng);
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Social Cohesion: <b>' + Math.round(layer.feature.properties.soc_cohes * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
+          if (!popup._map) popup.openOn(map);
+          window.clearTimeout(closeTooltip);
+            // highlight feature on mouseover
+            layer.setStyle({
+              weight: 3,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            });
+          if (!L.Browser.ie && !L.Browser.opera) {
+              layer.bringToFront();
+            }
+        }
+        function mouseout10(e) {
+          soc_cohes.resetStyle(e.target);
+          closeTooltip = window.setTimeout(function() {
+            map.closePopup();
+          }, 100);
+        }
+        // End 10
+
 
 //////////MAP DEF //////////////////
         map = L.map("map", {
             zoom: 10,
             center: [38.574, -121.384],
-            layers: [mean_bmi, per_ovw_ob, per_ob, per_mvpa, per_hi_bp, per_type2, per_frpr, per_asthma, Percent_TC]
+            layers: [mean_bmi, per_ovw_ob, per_ob, per_mvpa, per_hi_bp, per_type2, per_frpr, per_asthma, soc_cohes, Percent_TC]
         });
 
         // Larger screens get expanded layer control
@@ -521,6 +569,7 @@
             "% w/ Type 2 Diabetes": per_type2, 
             "% in Fair/Poor Health": per_frpr, 
             "% w/ Asthma": per_asthma,
+            "% Social Coesion": soc_cohes,
             "% Treecover": Percent_TC
         };
 
