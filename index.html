@@ -403,16 +403,16 @@
         // 8 - per_frpr
         function getStyle8(feature) {
           return {
-            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor8(feature.properties.per_frpr)
+            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor8(1 - feature.properties.per_frpr)
           };
         }
         function getColor8(d) {
-          return d > 0.3600 ? '#391b7b' 
-              : d > 0.2700 ? '#5d3e91' 
-              : d > 0.1700 ? '#7e62a7' 
-              : d > 0.1200 ? '#9e88bd' 
-              : d > 0.0600 ? '#beaed2' 
-              : d > 0.0200 ? '#ded6e9' 
+              return d > 0.97 ? '#391b7b' 
+              : d > 0.92 ? '#5d3e91' 
+              : d > 0.87 ? '#7e62a7' 
+              : d > 0.81 ? '#9e88bd' 
+              : d > 0.65 ? '#beaed2' 
+              : d > 0.45 ? '#ded6e9'
               : '#ffffff';
         }
         function onEachFeature8(feature, layer) {
@@ -423,7 +423,7 @@
         function mousemove8(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Fair or Poor Health: <b>' + Math.round(layer.feature.properties.per_frpr * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
+          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Good or Excellent Health: <b>' + (100-Math.round(layer.feature.properties.per_frpr * 100).toFixed(0)) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
           if (!popup._map) popup.openOn(map);
           window.clearTimeout(closeTooltip);
             // highlight feature on mouseover
@@ -567,7 +567,7 @@
             "% w/ >150min MVPA/wk": per_mvpa, 
             "% w/ High Blood Pressure": per_hi_bp, 
             "% w/ Type 2 Diabetes": per_type2, 
-            "% in Fair/Poor Health": per_frpr, 
+            "% in Good/Excellent Health": per_frpr, 
             "% w/ Asthma": per_asthma,
             "% Social Coesion": soc_cohes,
             "% Treecover": Percent_TC
