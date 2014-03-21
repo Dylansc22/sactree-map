@@ -550,7 +550,7 @@
             : d > 25.264 ? '#8BB458' 
             : d > 19.533 ? '#A5CE72' 
             : d > 13.713 ? '#BEE78B' 
-            : d > 7.007 ? '#D7FFA4' 
+            : d > 0.5 ? '#D7FFA4' 
             : '#fff';
         }
         function onEachFeature11(feature, layer) {
@@ -589,6 +589,8 @@
             center: [38.574, -121.384],
             layers: [mean_bmi, per_ovw_ob, per_ob, per_mvpa, per_hi_bp, per_type2, per_frpr, per_asthma, soc_cohes, Percent_TC, Percent_TC_bg]
         });
+
+        map.zoomControl.setPosition('bottomright');
 
         // Larger screens get expanded layer control
         if (document.body.clientWidth <= 767) {
