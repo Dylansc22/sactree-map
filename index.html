@@ -32,9 +32,10 @@
 
 <script>
 
-  $.getJSON('sactree_zips2.json', function(data) {
+  $.getJSON('sactree_geoms1.json', function(data) {
         // Convert the topojson to geojson
         var zips_geojson = topojson.feature(data, data.objects.zips).features;
+        var bgs_geojson = topojson.feature(data, data.objects.bgs).features;
         // Create leaflet vector layer and add it to the map
         popup = new L.Popup({
           autoPan: false
@@ -92,11 +93,16 @@
           onEachFeature: onEachFeature1
         });
 
+        var Percent_TC_bg = L.geoJson(bgs_geojson, {
+          style: getStyle11,
+          onEachFeature: onEachFeature11
+        });
+
         
         // 1 - Percent_TC
         function getStyle1(feature) {
           return {
-            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor1(feature.properties.Percent_TC)
+            weight: 1, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor1(feature.properties.Percent_TC)
           };
         }
         function getColor1(d) {
@@ -140,7 +146,7 @@
         // 2 - mean_bmi
         function getStyle2(feature) {
           return {
-            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor2(feature.properties.mean_bmi)
+            weight: 1, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor2(feature.properties.mean_bmi)
           };
         }
         function getColor2(d) {
@@ -184,7 +190,7 @@
         // 3 - per_ovw_ob
         function getStyle3(feature) {
           return {
-            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor3(feature.properties.per_ovw_ob)
+            weight: 1, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor3(feature.properties.per_ovw_ob)
           };
         }
         function getColor3(d) {
@@ -228,7 +234,7 @@
         // 4 - per_ob
         function getStyle4(feature) {
           return {
-            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor4(feature.properties.per_ob)
+            weight: 1, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor4(feature.properties.per_ob)
           };
         }
         function getColor4(d) {
@@ -272,7 +278,7 @@
         // 5 - per_mvpa
         function getStyle5(feature) {
           return {
-            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor5(feature.properties.per_mvpa)
+            weight: 1, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor5(feature.properties.per_mvpa)
           };
         }
         function getColor5(d) {
@@ -316,7 +322,7 @@
           // 6 - per_hi_bp
         function getStyle6(feature) {
           return {
-            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor6(feature.properties.per_hi_bp)
+            weight: 1, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor6(feature.properties.per_hi_bp)
           };
         }
         function getColor6(d) {
@@ -359,7 +365,7 @@
         // 7 - per_type2
         function getStyle7(feature) {
           return {
-            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor7(feature.properties.per_type2)
+            weight: 1, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor7(feature.properties.per_type2)
           };
         }
         function getColor7(d) {
@@ -403,7 +409,7 @@
         // 8 - per_frpr
         function getStyle8(feature) {
           return {
-            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor8(1 - feature.properties.per_frpr)
+            weight: 1, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor8(1 - feature.properties.per_frpr)
           };
         }
         function getColor8(d) {
@@ -447,7 +453,7 @@
         // 9 - per_asthma
         function getStyle9(feature) {
           return {
-            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor9(feature.properties.per_asthma)
+            weight: 1, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor9(feature.properties.per_asthma)
           };
         }
         function getColor9(d) {
@@ -491,7 +497,7 @@
         // 10 - soc_cohes
         function getStyle10(feature) {
           return {
-            weight: 2, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor10(feature.properties.soc_cohes)
+            weight: 1, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor10(feature.properties.soc_cohes)
           };
         }
         function getColor10(d) {
@@ -532,12 +538,56 @@
         }
         // End 10
 
+        // 11 - Percent_TC_bg
+        function getStyle11(feature) {
+          return {
+            weight: 1, opacity: 0.2, color: 'black', fillOpacity: 0.95, fillColor: getColor11(feature.properties.Percent_TC)
+          };
+        }
+        function getColor11(d) {
+          return d > 41.17 ? '#588125' 
+            : d > 31.832 ? '#729B3F' 
+            : d > 25.264 ? '#8BB458' 
+            : d > 19.533 ? '#A5CE72' 
+            : d > 13.713 ? '#BEE78B' 
+            : d > 7.007 ? '#D7FFA4' 
+            : '#fff';
+        }
+        function onEachFeature11(feature, layer) {
+          layer.on({
+            mousemove: mousemove11, mouseout: mouseout11
+          });
+        }
+        function mousemove11(e) {
+          var layer = e.target;
+          popup.setLatLng(e.latlng);
+          popup.setContent('<h2>Census BG: ' + layer.feature.properties.GEOID10 + '</h2>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
+          if (!popup._map) popup.openOn(map);
+          window.clearTimeout(closeTooltip);
+            // highlight feature on mouseover
+            layer.setStyle({
+              weight: 3,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            });
+          if (!L.Browser.ie && !L.Browser.opera) {
+              layer.bringToFront();
+            }
+        }
+        function mouseout11(e) {
+          Percent_TC.resetStyle(e.target);
+          closeTooltip = window.setTimeout(function() {
+            map.closePopup();
+          }, 100);
+        }
+        // End 11
+
 
 //////////MAP DEF //////////////////
         map = L.map("map", {
             zoom: 10,
             center: [38.574, -121.384],
-            layers: [mean_bmi, per_ovw_ob, per_ob, per_mvpa, per_hi_bp, per_type2, per_frpr, per_asthma, soc_cohes, Percent_TC]
+            layers: [mean_bmi, per_ovw_ob, per_ob, per_mvpa, per_hi_bp, per_type2, per_frpr, per_asthma, soc_cohes, Percent_TC, Percent_TC_bg]
         });
 
         // Larger screens get expanded layer control
@@ -570,7 +620,8 @@
             "% in Good/Excellent Health": per_frpr, 
             "% w/ Asthma": per_asthma,
             "% Social Coesion": soc_cohes,
-            "% Treecover": Percent_TC
+            "% Treecover (zipcode)": Percent_TC,
+            "% Treecover (Block Group)": Percent_TC_bg
         };
 
         var layerControl = L.control.layers(baseLayers, null,{
