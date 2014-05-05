@@ -23,6 +23,8 @@ body {
 .leaflet-top-pane {
     pointer-events: none;
   }
+  /*Deprecated*/
+ /*
 #map-ui {
     position: absolute;
     top: 15px;
@@ -68,4 +70,32 @@ body {
     filter: alpha(opacity=60);
     border: 5px solid #333;
     color: #fff;
+}*/
+
+ #content {
+  position:absolute;
+  top:0;
+  right:0;
+  max-width:250px;
+  bottom:0;
+  background:rgba(255, 255, 255, 0.7);
 }
+  .sidecontainer {
+    padding:20px;
+  }
+@media (max-width:640px) {
+    
+  #content {
+      position:absolute;
+      bottom:0;
+      right:0;
+      left:0;
+      top:auto;
+      max-height:260px;
+      width:100%;
+      background:rgba(255, 255, 255, 0.7);
+  }
+  .sidecontainer {
+    padding:10px;
+  }
+  

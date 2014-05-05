@@ -14,6 +14,12 @@
 
 <div id='map'></div>
 
+<div id='content'>
+    <div class="sidecontainer">
+      
+    </div>
+  </div>
+
 <style>
 
   /* Style the layer switcher here (maybe not radio buttons?)*/
@@ -119,6 +125,19 @@
             click: mousemove1, mouseout: mouseout1
           });
         }
+
+        //bind to something other than the popup
+        /*.on('click', function(e) {
+          e.layer.unbindPopup();
+          e.preventDefault();
+          e.stopPropagation();
+
+          info = document.getElementByClass('sidecontainer');
+          var attribute = document.createElement('a');
+          info.appendChild(attribute);
+          window.open(e.layer.feature.properties.url);
+        }*/
+        
         function mousemove1(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
@@ -164,6 +183,7 @@
             click: mousemove2, mouseout: mouseout2
           });
         }
+
         function mousemove2(e) {
           var layer = e.target;
           popup.setLatLng(e.latlng);
@@ -576,7 +596,7 @@
             }
         }
         function mouseout11(e) {
-          Percent_TC.resetStyle(e.target);
+          Percent_TC_bg.resetStyle(e.target);
           closeTooltip = window.setTimeout(function() {
             map.closePopup();
           }, 100);
@@ -628,7 +648,8 @@
         };
 
         var layerControl = L.control.layers(baseLayers, null,{
-            collapsed: isCollapsed
+            collapsed: isCollapsed,
+            position: 'topleft'
         }).addTo(map);
 
       });
