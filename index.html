@@ -15,7 +15,7 @@
 <div id='map'></div>
 
 <div id='content'>
-    <div class="sidecontainer">
+    <div id='infobits' class='sidecontainer'>
       
     </div>
   </div>
@@ -122,45 +122,35 @@
         }
         function onEachFeature1(feature, layer) {
           layer.on({
-            click: mousemove1, mouseout: mouseout1
+            click: mouseclick1, mouseout: mouseout1
           });
         }
 
-        //bind to something other than the popup
-        /*.on('click', function(e) {
-          e.layer.unbindPopup();
-          e.preventDefault();
-          e.stopPropagation();
+        function mouseclick1(e) {
+          var feature = e.target.feature;
+          var info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID + '</h2><table><tr><td>Tree Cover</td><td>|</td><td><b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b></td></tr><tr><td>Mean BMI</td><td>|</td><td><b>' + feature.properties.mean_bmi + '</b></td></tr><tr><td>Overweight/Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>>150min MVPA/wk</td><td>|</td><td><b>' + Math.round(feature.properties.per_mvpa * 100).toFixed(0) + '%</b></td></tr><tr><td>High Blood Pressure</td><td>|</td><td><b>' + Math.round(feature.properties.per_hi_bp * 100).toFixed(0) + '%</b></td></tr><tr><td>Type 2 Diabetes</td><td>|</td><td><b>' + Math.round(feature.properties.per_type2 * 100).toFixed(0) + '%</b></td></tr><tr><td>Good/Excellent Health</td><td>|</td><td><b>' + Math.round(feature.properties.per_frpr * 100).toFixed(0) + '%</b></td></tr><tr><td>Asthma</td><td>|</td><td><b>' + Math.round(feature.properties.per_asthma * 100).toFixed(0) + '%</b></td></tr><tr><td>Social Cohesion</td><td>|</td><td><b>' + Math.round(feature.properties.soc_cohes * 100).toFixed(0) + '%</b></td></tr></table>';
 
-          info = document.getElementByClass('sidecontainer');
-          var attribute = document.createElement('a');
-          info.appendChild(attribute);
-          window.open(e.layer.feature.properties.url);
-        }*/
-        
-        function mousemove1(e) {
-          var layer = e.target;
-          popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
-          if (!popup._map) popup.openOn(map);
-          window.clearTimeout(closeTooltip);
-            // highlight feature on mouseover
-            layer.setStyle({
-              weight: 5,
-              opacity: 0.5,
-              color: '#fff',
-              fillOpacity: 0.9
-            });
+          document.getElementById('infobits').innerHTML = info;
+
+          //A better way, but not working:
+          //document.getElementsByName('path')[0].style.weight=1;
+
+          e.target.setStyle({
+            opacity:0.8,
+            weight: 5,
+            color: '#444',
+            fillOpacity: 0.9
+          });
           if (!L.Browser.ie && !L.Browser.opera) {
-              layer.bringToFront();
-            }
-        }
+            e.target.bringToFront();
+          }
+        };
+
         function mouseout1(e) {
           Percent_TC.resetStyle(e.target);
-          closeTooltip = window.setTimeout(function() {
-            map.closePopup();
-          }, 100);
+          //document.getElementById('infobits').innerHTML = '';
         }
+
         // End 1
 
         // 2 - mean_bmi
@@ -185,26 +175,28 @@
         }
 
         function mousemove2(e) {
-          var layer = e.target;
-          popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Mean BMI: <b>' + layer.feature.properties.mean_bmi + '</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
-          if (!popup._map) popup.openOn(map);
-          window.clearTimeout(closeTooltip);
-            // highlight feature on mouseover
-            layer.setStyle({
-              weight: 5,
-              opacity: 0.5,
-              fillOpacity: 0.9
-            });
+          var feature = e.target.feature;
+          var info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID + '</h2><table><tr><td>Tree Cover</td><td>|</td><td><b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b></td></tr><tr><td>Mean BMI</td><td>|</td><td><b>' + feature.properties.mean_bmi + '</b></td></tr><tr><td>Overweight/Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>>150min MVPA/wk</td><td>|</td><td><b>' + Math.round(feature.properties.per_mvpa * 100).toFixed(0) + '%</b></td></tr><tr><td>High Blood Pressure</td><td>|</td><td><b>' + Math.round(feature.properties.per_hi_bp * 100).toFixed(0) + '%</b></td></tr><tr><td>Type 2 Diabetes</td><td>|</td><td><b>' + Math.round(feature.properties.per_type2 * 100).toFixed(0) + '%</b></td></tr><tr><td>Good/Excellent Health</td><td>|</td><td><b>' + Math.round(feature.properties.per_frpr * 100).toFixed(0) + '%</b></td></tr><tr><td>Asthma</td><td>|</td><td><b>' + Math.round(feature.properties.per_asthma * 100).toFixed(0) + '%</b></td></tr><tr><td>Social Cohesion</td><td>|</td><td><b>' + Math.round(feature.properties.soc_cohes * 100).toFixed(0) + '%</b></td></tr></table>';
+
+          document.getElementById('infobits').innerHTML = info;
+
+          //A better way, but not working:
+          //document.getElementsByName('path')[0].style.weight=1;
+
+          e.target.setStyle({
+            opacity:0.8,
+            weight: 5,
+            color: '#444',
+            fillOpacity: 0.9
+          });
           if (!L.Browser.ie && !L.Browser.opera) {
-              layer.bringToFront();
-            }
-        }
+            e.target.bringToFront();
+          }
+        };
+
         function mouseout2(e) {
           mean_bmi.resetStyle(e.target);
-          closeTooltip = window.setTimeout(function() {
-            map.closePopup();
-          }, 100);
+          //document.getElementById('infobits').innerHTML = '';
         }
         // End 2
 
@@ -229,26 +221,28 @@
           });
         }
         function mousemove3(e) {
-          var layer = e.target;
-          popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Overweight or Obese: <b>' + Math.round(layer.feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
-          if (!popup._map) popup.openOn(map);
-          window.clearTimeout(closeTooltip);
-            // highlight feature on mouseover
-            layer.setStyle({
-              weight: 5,
-              opacity: 0.5,
-              fillOpacity: 0.9
-            });
+          var feature = e.target.feature;
+          var info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID + '</h2><table><tr><td>Tree Cover</td><td>|</td><td><b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b></td></tr><tr><td>Mean BMI</td><td>|</td><td><b>' + feature.properties.mean_bmi + '</b></td></tr><tr><td>Overweight/Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>>150min MVPA/wk</td><td>|</td><td><b>' + Math.round(feature.properties.per_mvpa * 100).toFixed(0) + '%</b></td></tr><tr><td>High Blood Pressure</td><td>|</td><td><b>' + Math.round(feature.properties.per_hi_bp * 100).toFixed(0) + '%</b></td></tr><tr><td>Type 2 Diabetes</td><td>|</td><td><b>' + Math.round(feature.properties.per_type2 * 100).toFixed(0) + '%</b></td></tr><tr><td>Good/Excellent Health</td><td>|</td><td><b>' + Math.round(feature.properties.per_frpr * 100).toFixed(0) + '%</b></td></tr><tr><td>Asthma</td><td>|</td><td><b>' + Math.round(feature.properties.per_asthma * 100).toFixed(0) + '%</b></td></tr><tr><td>Social Cohesion</td><td>|</td><td><b>' + Math.round(feature.properties.soc_cohes * 100).toFixed(0) + '%</b></td></tr></table>';
+
+          document.getElementById('infobits').innerHTML = info;
+
+          //A better way, but not working:
+          //document.getElementsByName('path')[0].style.weight=1;
+
+          e.target.setStyle({
+            opacity:0.8,
+            weight: 5,
+            color: '#444',
+            fillOpacity: 0.9
+          });
           if (!L.Browser.ie && !L.Browser.opera) {
-              layer.bringToFront();
-            }
-        }
+            e.target.bringToFront();
+          }
+        };
+
         function mouseout3(e) {
           per_ovw_ob.resetStyle(e.target);
-          closeTooltip = window.setTimeout(function() {
-            map.closePopup();
-          }, 100);
+          //document.getElementById('infobits').innerHTML = '';
         }
         // End 3
 
@@ -273,26 +267,28 @@
           });
         }
         function mousemove4(e) {
-          var layer = e.target;
-          popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Obese: <b>' + Math.round(layer.feature.properties.per_ob * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
-          if (!popup._map) popup.openOn(map);
-          window.clearTimeout(closeTooltip);
-            // highlight feature on mouseover
-            layer.setStyle({
-              weight: 5,
-              opacity: 0.5,
-              fillOpacity: 0.9
-            });
+          var feature = e.target.feature;
+          var info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID + '</h2><table><tr><td>Tree Cover</td><td>|</td><td><b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b></td></tr><tr><td>Mean BMI</td><td>|</td><td><b>' + feature.properties.mean_bmi + '</b></td></tr><tr><td>Overweight/Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>>150min MVPA/wk</td><td>|</td><td><b>' + Math.round(feature.properties.per_mvpa * 100).toFixed(0) + '%</b></td></tr><tr><td>High Blood Pressure</td><td>|</td><td><b>' + Math.round(feature.properties.per_hi_bp * 100).toFixed(0) + '%</b></td></tr><tr><td>Type 2 Diabetes</td><td>|</td><td><b>' + Math.round(feature.properties.per_type2 * 100).toFixed(0) + '%</b></td></tr><tr><td>Good/Excellent Health</td><td>|</td><td><b>' + Math.round(feature.properties.per_frpr * 100).toFixed(0) + '%</b></td></tr><tr><td>Asthma</td><td>|</td><td><b>' + Math.round(feature.properties.per_asthma * 100).toFixed(0) + '%</b></td></tr><tr><td>Social Cohesion</td><td>|</td><td><b>' + Math.round(feature.properties.soc_cohes * 100).toFixed(0) + '%</b></td></tr></table>';
+
+          document.getElementById('infobits').innerHTML = info;
+
+          //A better way, but not working:
+          //document.getElementsByName('path')[0].style.weight=1;
+
+          e.target.setStyle({
+            opacity:0.8,
+            weight: 5,
+            color: '#444',
+            fillOpacity: 0.9
+          });
           if (!L.Browser.ie && !L.Browser.opera) {
-              layer.bringToFront();
-            }
-        }
+            e.target.bringToFront();
+          }
+        };
+
         function mouseout4(e) {
           per_ob.resetStyle(e.target);
-          closeTooltip = window.setTimeout(function() {
-            map.closePopup();
-          }, 100);
+          //document.getElementById('infobits').innerHTML = '';
         }
         // End 4
 
@@ -317,26 +313,28 @@
           });
         }
         function mousemove5(e) {
-          var layer = e.target;
-          popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>>150mins of MVPA/wk: <b>' + Math.round(layer.feature.properties.per_mvpa * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
-          if (!popup._map) popup.openOn(map);
-          window.clearTimeout(closeTooltip);
-            // highlight feature on mouseover
-            layer.setStyle({
-              weight: 5,
-              opacity: 0.5,
-              fillOpacity: 0.9
-            });
+          var feature = e.target.feature;
+          var info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID + '</h2><table><tr><td>Tree Cover</td><td>|</td><td><b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b></td></tr><tr><td>Mean BMI</td><td>|</td><td><b>' + feature.properties.mean_bmi + '</b></td></tr><tr><td>Overweight/Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>>150min MVPA/wk</td><td>|</td><td><b>' + Math.round(feature.properties.per_mvpa * 100).toFixed(0) + '%</b></td></tr><tr><td>High Blood Pressure</td><td>|</td><td><b>' + Math.round(feature.properties.per_hi_bp * 100).toFixed(0) + '%</b></td></tr><tr><td>Type 2 Diabetes</td><td>|</td><td><b>' + Math.round(feature.properties.per_type2 * 100).toFixed(0) + '%</b></td></tr><tr><td>Good/Excellent Health</td><td>|</td><td><b>' + Math.round(feature.properties.per_frpr * 100).toFixed(0) + '%</b></td></tr><tr><td>Asthma</td><td>|</td><td><b>' + Math.round(feature.properties.per_asthma * 100).toFixed(0) + '%</b></td></tr><tr><td>Social Cohesion</td><td>|</td><td><b>' + Math.round(feature.properties.soc_cohes * 100).toFixed(0) + '%</b></td></tr></table>';
+
+          document.getElementById('infobits').innerHTML = info;
+
+          //A better way, but not working:
+          //document.getElementsByName('path')[0].style.weight=1;
+
+          e.target.setStyle({
+            opacity:0.8,
+            weight: 5,
+            color: '#444',
+            fillOpacity: 0.9
+          });
           if (!L.Browser.ie && !L.Browser.opera) {
-              layer.bringToFront();
-            }
-        }
+            e.target.bringToFront();
+          }
+        };
+
         function mouseout5(e) {
           per_mvpa.resetStyle(e.target);
-          closeTooltip = window.setTimeout(function() {
-            map.closePopup();
-          }, 100);
+          //document.getElementById('infobits').innerHTML = '';
         }
         // End 5
         
@@ -360,26 +358,28 @@
           });
         }
         function mousemove6(e) {
-          var layer = e.target;
-          popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>High Blood Pressure: <b>' + Math.round(layer.feature.properties.per_hi_bp * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
-          if (!popup._map) popup.openOn(map);
-          window.clearTimeout(closeTooltip);
-            // highlight feature on mouseover
-            layer.setStyle({
-              weight: 5,
-              opacity: 0.5,
-              fillOpacity: 0.9
-            });
+          var feature = e.target.feature;
+          var info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID + '</h2><table><tr><td>Tree Cover</td><td>|</td><td><b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b></td></tr><tr><td>Mean BMI</td><td>|</td><td><b>' + feature.properties.mean_bmi + '</b></td></tr><tr><td>Overweight/Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>>150min MVPA/wk</td><td>|</td><td><b>' + Math.round(feature.properties.per_mvpa * 100).toFixed(0) + '%</b></td></tr><tr><td>High Blood Pressure</td><td>|</td><td><b>' + Math.round(feature.properties.per_hi_bp * 100).toFixed(0) + '%</b></td></tr><tr><td>Type 2 Diabetes</td><td>|</td><td><b>' + Math.round(feature.properties.per_type2 * 100).toFixed(0) + '%</b></td></tr><tr><td>Good/Excellent Health</td><td>|</td><td><b>' + Math.round(feature.properties.per_frpr * 100).toFixed(0) + '%</b></td></tr><tr><td>Asthma</td><td>|</td><td><b>' + Math.round(feature.properties.per_asthma * 100).toFixed(0) + '%</b></td></tr><tr><td>Social Cohesion</td><td>|</td><td><b>' + Math.round(feature.properties.soc_cohes * 100).toFixed(0) + '%</b></td></tr></table>';
+
+          document.getElementById('infobits').innerHTML = info;
+
+          //A better way, but not working:
+          //document.getElementsByName('path')[0].style.weight=1;
+
+          e.target.setStyle({
+            opacity:0.8,
+            weight: 5,
+            color: '#444',
+            fillOpacity: 0.9
+          });
           if (!L.Browser.ie && !L.Browser.opera) {
-              layer.bringToFront();
-            }
-        }
+            e.target.bringToFront();
+          }
+        };
+
         function mouseout6(e) {
           per_hi_bp.resetStyle(e.target);
-          closeTooltip = window.setTimeout(function() {
-            map.closePopup();
-          }, 100);
+          //document.getElementById('infobits').innerHTML = '';
         }
         // End 6
 
@@ -404,26 +404,28 @@
           });
         }
         function mousemove7(e) {
-          var layer = e.target;
-          popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Type II Diabetes: <b>' + Math.round(layer.feature.properties.per_type2 * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
-          if (!popup._map) popup.openOn(map);
-          window.clearTimeout(closeTooltip);
-            // highlight feature on mouseover
-            layer.setStyle({
-              weight: 5,
-              opacity: 0.5,
-              fillOpacity: 0.9
-            });
+          var feature = e.target.feature;
+          var info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID + '</h2><table><tr><td>Tree Cover</td><td>|</td><td><b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b></td></tr><tr><td>Mean BMI</td><td>|</td><td><b>' + feature.properties.mean_bmi + '</b></td></tr><tr><td>Overweight/Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>>150min MVPA/wk</td><td>|</td><td><b>' + Math.round(feature.properties.per_mvpa * 100).toFixed(0) + '%</b></td></tr><tr><td>High Blood Pressure</td><td>|</td><td><b>' + Math.round(feature.properties.per_hi_bp * 100).toFixed(0) + '%</b></td></tr><tr><td>Type 2 Diabetes</td><td>|</td><td><b>' + Math.round(feature.properties.per_type2 * 100).toFixed(0) + '%</b></td></tr><tr><td>Good/Excellent Health</td><td>|</td><td><b>' + Math.round(feature.properties.per_frpr * 100).toFixed(0) + '%</b></td></tr><tr><td>Asthma</td><td>|</td><td><b>' + Math.round(feature.properties.per_asthma * 100).toFixed(0) + '%</b></td></tr><tr><td>Social Cohesion</td><td>|</td><td><b>' + Math.round(feature.properties.soc_cohes * 100).toFixed(0) + '%</b></td></tr></table>';
+
+          document.getElementById('infobits').innerHTML = info;
+
+          //A better way, but not working:
+          //document.getElementsByName('path')[0].style.weight=1;
+
+          e.target.setStyle({
+            opacity:0.8,
+            weight: 5,
+            color: '#444',
+            fillOpacity: 0.9
+          });
           if (!L.Browser.ie && !L.Browser.opera) {
-              layer.bringToFront();
-            }
-        }
+            e.target.bringToFront();
+          }
+        };
+
         function mouseout7(e) {
           per_type2.resetStyle(e.target);
-          closeTooltip = window.setTimeout(function() {
-            map.closePopup();
-          }, 100);
+          //document.getElementById('infobits').innerHTML = '';
         }
         // End 7
 
@@ -448,26 +450,28 @@
           });
         }
         function mousemove8(e) {
-          var layer = e.target;
-          popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Good or Excellent Health: <b>' + (100-Math.round(layer.feature.properties.per_frpr * 100).toFixed(0)) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
-          if (!popup._map) popup.openOn(map);
-          window.clearTimeout(closeTooltip);
-            // highlight feature on mouseover
-            layer.setStyle({
-              weight: 5,
-              opacity: 0.5,
-              fillOpacity: 0.9
-            });
+          var feature = e.target.feature;
+          var info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID + '</h2><table><tr><td>Tree Cover</td><td>|</td><td><b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b></td></tr><tr><td>Mean BMI</td><td>|</td><td><b>' + feature.properties.mean_bmi + '</b></td></tr><tr><td>Overweight/Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>>150min MVPA/wk</td><td>|</td><td><b>' + Math.round(feature.properties.per_mvpa * 100).toFixed(0) + '%</b></td></tr><tr><td>High Blood Pressure</td><td>|</td><td><b>' + Math.round(feature.properties.per_hi_bp * 100).toFixed(0) + '%</b></td></tr><tr><td>Type 2 Diabetes</td><td>|</td><td><b>' + Math.round(feature.properties.per_type2 * 100).toFixed(0) + '%</b></td></tr><tr><td>Good/Excellent Health</td><td>|</td><td><b>' + Math.round(feature.properties.per_frpr * 100).toFixed(0) + '%</b></td></tr><tr><td>Asthma</td><td>|</td><td><b>' + Math.round(feature.properties.per_asthma * 100).toFixed(0) + '%</b></td></tr><tr><td>Social Cohesion</td><td>|</td><td><b>' + Math.round(feature.properties.soc_cohes * 100).toFixed(0) + '%</b></td></tr></table>';
+
+          document.getElementById('infobits').innerHTML = info;
+
+          //A better way, but not working:
+          //document.getElementsByName('path')[0].style.weight=1;
+
+          e.target.setStyle({
+            opacity:0.8,
+            weight: 5,
+            color: '#444',
+            fillOpacity: 0.9
+          });
           if (!L.Browser.ie && !L.Browser.opera) {
-              layer.bringToFront();
-            }
-        }
+            e.target.bringToFront();
+          }
+        };
+
         function mouseout8(e) {
           per_frpr.resetStyle(e.target);
-          closeTooltip = window.setTimeout(function() {
-            map.closePopup();
-          }, 100);
+          //document.getElementById('infobits').innerHTML = '';
         }
         // End 8
 
@@ -492,26 +496,28 @@
           });
         }
         function mousemove9(e) {
-          var layer = e.target;
-          popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Asthma: <b>' + Math.round(layer.feature.properties.per_asthma * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
-          if (!popup._map) popup.openOn(map);
-          window.clearTimeout(closeTooltip);
-            // highlight feature on mouseover
-            layer.setStyle({
-              weight: 5,
-              opacity: 0.5,
-              fillOpacity: 0.9
-            });
+          var feature = e.target.feature;
+          var info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID + '</h2><table><tr><td>Tree Cover</td><td>|</td><td><b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b></td></tr><tr><td>Mean BMI</td><td>|</td><td><b>' + feature.properties.mean_bmi + '</b></td></tr><tr><td>Overweight/Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>>150min MVPA/wk</td><td>|</td><td><b>' + Math.round(feature.properties.per_mvpa * 100).toFixed(0) + '%</b></td></tr><tr><td>High Blood Pressure</td><td>|</td><td><b>' + Math.round(feature.properties.per_hi_bp * 100).toFixed(0) + '%</b></td></tr><tr><td>Type 2 Diabetes</td><td>|</td><td><b>' + Math.round(feature.properties.per_type2 * 100).toFixed(0) + '%</b></td></tr><tr><td>Good/Excellent Health</td><td>|</td><td><b>' + Math.round(feature.properties.per_frpr * 100).toFixed(0) + '%</b></td></tr><tr><td>Asthma</td><td>|</td><td><b>' + Math.round(feature.properties.per_asthma * 100).toFixed(0) + '%</b></td></tr><tr><td>Social Cohesion</td><td>|</td><td><b>' + Math.round(feature.properties.soc_cohes * 100).toFixed(0) + '%</b></td></tr></table>';
+
+          document.getElementById('infobits').innerHTML = info;
+
+          //A better way, but not working:
+          //document.getElementsByName('path')[0].style.weight=1;
+
+          e.target.setStyle({
+            opacity:0.8,
+            weight: 5,
+            color: '#444',
+            fillOpacity: 0.9
+          });
           if (!L.Browser.ie && !L.Browser.opera) {
-              layer.bringToFront();
-            }
-        }
+            e.target.bringToFront();
+          }
+        };
+
         function mouseout9(e) {
           per_asthma.resetStyle(e.target);
-          closeTooltip = window.setTimeout(function() {
-            map.closePopup();
-          }, 100);
+          //document.getElementById('infobits').innerHTML = '';
         }
         // End 9
 
@@ -536,26 +542,28 @@
           });
         }
         function mousemove10(e) {
-          var layer = e.target;
-          popup.setLatLng(e.latlng);
-          popup.setContent('<h2>' + layer.feature.properties.NAME + ' - ' + layer.feature.properties.ID + '</h2>Social Cohesion: <b>' + Math.round(layer.feature.properties.soc_cohes * 100).toFixed(0) + '%</b><br>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
-          if (!popup._map) popup.openOn(map);
-          window.clearTimeout(closeTooltip);
-            // highlight feature on mouseover
-            layer.setStyle({
-              weight: 5,
-              opacity: 0.5,
-              fillOpacity: 0.9
-            });
+          var feature = e.target.feature;
+          var info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID + '</h2><table><tr><td>Tree Cover</td><td>|</td><td><b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b></td></tr><tr><td>Mean BMI</td><td>|</td><td><b>' + feature.properties.mean_bmi + '</b></td></tr><tr><td>Overweight/Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ovw_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>Obese</td><td>|</td><td><b>' + Math.round(feature.properties.per_ob * 100).toFixed(0) + '%</b></td></tr><tr><td>>150min MVPA/wk</td><td>|</td><td><b>' + Math.round(feature.properties.per_mvpa * 100).toFixed(0) + '%</b></td></tr><tr><td>High Blood Pressure</td><td>|</td><td><b>' + Math.round(feature.properties.per_hi_bp * 100).toFixed(0) + '%</b></td></tr><tr><td>Type 2 Diabetes</td><td>|</td><td><b>' + Math.round(feature.properties.per_type2 * 100).toFixed(0) + '%</b></td></tr><tr><td>Good/Excellent Health</td><td>|</td><td><b>' + Math.round(feature.properties.per_frpr * 100).toFixed(0) + '%</b></td></tr><tr><td>Asthma</td><td>|</td><td><b>' + Math.round(feature.properties.per_asthma * 100).toFixed(0) + '%</b></td></tr><tr><td>Social Cohesion</td><td>|</td><td><b>' + Math.round(feature.properties.soc_cohes * 100).toFixed(0) + '%</b></td></tr></table>';
+
+          document.getElementById('infobits').innerHTML = info;
+
+          //A better way, but not working:
+          //document.getElementsByName('path')[0].style.weight=1;
+
+          e.target.setStyle({
+            opacity:0.8,
+            weight: 5,
+            color: '#444',
+            fillOpacity: 0.9
+          });
           if (!L.Browser.ie && !L.Browser.opera) {
-              layer.bringToFront();
-            }
-        }
+            e.target.bringToFront();
+          }
+        };
+
         function mouseout10(e) {
           soc_cohes.resetStyle(e.target);
-          closeTooltip = window.setTimeout(function() {
-            map.closePopup();
-          }, 100);
+          //document.getElementById('infobits').innerHTML = '';
         }
         // End 10
 
@@ -580,27 +588,30 @@
           });
         }
         function mousemove11(e) {
-          var layer = e.target;
-          popup.setLatLng(e.latlng);
-          popup.setContent('<h2>Census BG: ' + layer.feature.properties.GEOID10 + '</h2>Tree Cover: <b>' + Math.round(layer.feature.properties.Percent_TC).toFixed(0) + '%</b>');
-          if (!popup._map) popup.openOn(map);
-          window.clearTimeout(closeTooltip);
-            // highlight feature on mouseover
-            layer.setStyle({
-              weight: 5,
-              opacity: 0.5,
-              fillOpacity: 0.9
-            });
+
+        var feature = e.target.feature;
+          var info = '<h2>Census Block Group: ' + feature.properties.GEOID10 + '</h2>Tree Cover: <b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b><br><small>Select other layers for additional information, including health outcomes.</small>';
+
+          document.getElementById('infobits').innerHTML = info;
+
+          //A better way, but not working:
+          //document.getElementsByName('path')[0].style.weight=1;
+
+          e.target.setStyle({
+            opacity:0.8,
+            weight: 5,
+            color: '#444',
+            fillOpacity: 0.9
+          });
           if (!L.Browser.ie && !L.Browser.opera) {
-              layer.bringToFront();
-            }
-        }
+            e.target.bringToFront();
+          }
+        };
+
         function mouseout11(e) {
           Percent_TC_bg.resetStyle(e.target);
-          closeTooltip = window.setTimeout(function() {
-            map.closePopup();
-          }, 100);
-        }
+          //document.getElementById('infobits').innerHTML = '';
+        }  
         // End 11
 
 
