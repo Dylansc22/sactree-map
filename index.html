@@ -590,7 +590,7 @@
         function mousemove11(e) {
 
         var feature = e.target.feature;
-          var info = '<h2>Census Block Group: ' + feature.properties.GEOID10 + '</h2>Tree Cover: <b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b><br><small>Select other layers for additional information, including health outcomes.</small>';
+          var info = '<h2>Census Block Group: ' + feature.properties.GEOID10 + '</h2>Tree Cover: <b>' + Math.round(feature.properties.Percent_TC).toFixed(0) + '%</b><br><hr><small>Select other layers for additional information, including health outcomes.</small>';
 
           document.getElementById('infobits').innerHTML = info;
 
@@ -639,7 +639,7 @@
         var topPane = map._createPane('leaflet-top-pane', map.getPanes().mapPane);
         var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
           maxZoom: 17,
-          opacity: 0.4
+          opacity: 0.7
         }).addTo(map);
         topPane.appendChild(topLayer.getContainer());
         topLayer.setZIndex(7);
