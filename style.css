@@ -28,7 +28,7 @@ body {
   position: absolute;
   height: 100%;
   left: 0;
-  width: 220px;
+  width: 380px;
   margin: 0;
   padding: 0;
   z-index: 100;
@@ -52,9 +52,15 @@ body {
   bottom:0;
   background:rgba(255, 255, 255, 0.7);
 }
-  .sidecontainer {
-    padding:20px;
-  }
+.sidecontainer {
+  padding:20px;
+}
+
+a.active {
+  border-width: 2px;
+  border-color: #222 !important;
+}
+
 @media (max-width:640px) {
     
   #content {

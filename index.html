@@ -15,21 +15,19 @@
 
 <div id='map-ui'>
   <div class="btn-group-vertical" id="layerControls">
-    <!--<h4>Select a Layer:</h4>-->
-    <a href="#" class="btn btn-default" type="button">City Boundary</a>
-    <a href="#" class="btn btn-default" type="button">Chittenden County Towns</a>
-    <a href="#" class="btn btn-default" type="button">Bedrock Geology</a>
-    <a href="#" class="btn btn-default" type="button">Surficial Geology</a>
-    <a href="#" class="btn btn-default" type="button">Soil Types</a>
-    <a href="#" class="btn btn-default" type="button">Subwatersheds</a>
-    <a href="#" class="btn btn-default" type="button">Elevation Contours</a>
-    <a href="#" class="btn btn-default" type="button">VSWI Wetlands</a>
-    <a href="#" class="btn btn-default" type="button">Ann. Mean Precip.</a>
-    <a href="#" class="btn btn-default" type="button">Population Density, 2010</a>
-    <a href="#" class="btn btn-default" type="button">Households, 2010</a>
-    <a href="#" class="btn btn-default" type="button">City Parks</a>
-    <a href="#" class="btn btn-default" type="button">Building Footprints</a>
-    <a href="#" class="btn btn-default" type="button">Community Gardens</a>
+    <h2>Tree Cover</h2>
+    <a href="#" data-toggle="tooltip" data-placement="right" title="Percent of the Census block group that is covered by tree canopy"  class="layer btn btn-lg btn-success active" type="button" id="Percent_TC_bg" >Tree Cover - Block Groups</a>
+    <a href="#" data-toggle="tooltip" data-placement="right" title="Percent of the zip code that is covered by tree canopy"  class="layer btn btn-lg btn-success" type="button" id="Percent_TC" >Tree Cover - Zipcodes</a>
+    <h2>Health Outcomes</h2>
+    <a href="#" data-toggle="tooltip" data-placement="right" title="Percent reporting that they engage in adults are recommend to engage in at least 150 minutes of moderate or vigorous physical activity (MVPA) each week" class="layer btn btn-lg btn-primary" type="button" id="per_mvpa" >Physical Activity</a>
+    <a href="#" data-toggle="tooltip" data-placement="right" title="A general self-assessment of overall health condition and a good predictor of future health risk" class="layer btn btn-lg btn-primary" type="button" id="per_gdex" >Good/Excellent Health</a>
+    <a href="#" data-toggle="tooltip" data-placement="right" title="Percent reporting high social cohesion, based on positive interactions with neighbors, a feeling of trust towards neighbors, and a feeling of safety in the neighborhood" class="layer btn btn-lg btn-primary" type="button" id="soc_cohes" >Social Cohesion</a>
+    <a href="#" data-toggle="tooltip" data-placement="right" title="Body mass index (BMI) is a measure of weight relative to height" class="layer btn btn-lg btn-danger" type="button" id="mean_bmi" >Mean BMI</a>
+    <a href="#" data-toggle="tooltip" data-placement="right" title="Percent Overweight or Obese: having a BMI >=25 is considered overweight or obese" class="layer btn btn-lg btn-danger" type="button" id="per_ovw_ob" >Overweight/Obese</a>
+    <a href="#" data-toggle="tooltip" data-placement="right" title="Percent Obese: having a BMI >=30 is considered obese" class="layer btn btn-lg btn-danger" type="button" id="per_ob" >Obese</a>
+    <a href="#" data-toggle="tooltip" data-placement="right" title="Percent that has been told by a doctor that they have high blood pressure" class="layer btn btn-lg btn-danger" type="button" id="per_hi_bp" >High Blood Pressure</a>
+    <a href="#" data-toggle="tooltip" data-placement="right" title="Percent that has been told by a doctor that they have type 2 diabetes" class="layer btn btn-lg btn-danger" type="button" id="per_type2" >Type II Diabetes</a>
+    <a href="#" data-toggle="tooltip" data-placement="right" title="Percent that has been told by a doctor that they have current asthma" class="layer btn btn-lg btn-danger" type="button" id="per_asthma" >Asthma</a>
   </div>
 </div>
 
