@@ -61,6 +61,11 @@ a.active {
   border-color: #222 !important;
 }
 
+.tooltip-inner {
+    width: 150px;
+    font-size: 16px;
+}
+
 @media (max-width:640px) {
     
   #content {
