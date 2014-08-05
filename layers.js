@@ -1,6 +1,10 @@
 // DEFINE GLOBAL-ISH VARIABLES
 var zips_geojson, bgs_geojson;
 
+$(function () { $('#collapseOne').collapse({
+      toggle: true
+   })});
+
 // FORMATTERS:
 // STANDARDIZE VARIABLES
 function nullFormatter(e) {
@@ -26,7 +30,7 @@ map = L.map("map", {
   zoom: 10,
   center: [38.574, -121.384],
 });
-map.zoomControl.setPosition('bottomleft');
+map.zoomControl.setPosition('topleft');
 var baseLayer = new L.mapbox.tileLayer('landplanner.map-khn9uycz').addTo(map);
 var hash = L.hash(map);
 
