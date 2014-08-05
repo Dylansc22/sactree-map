@@ -41,8 +41,8 @@ topLayer.setZIndex(7);
 
 // ADD THE LAYER CONTROL FUNCTION
 $('.layer').click(function() {
-  var oldLayer = $('.active').attr('id');
-  var newLayer = $(this).attr('id');
+  var oldLayer = myLayers[$('.active').attr('id')];
+  var newLayer = myLayers[$(this).attr('id')];
   console.log(oldLayer + ' --> ' + newLayer);
   $('#infobits').html('<h2>' + this.text + '</h2><hr>' + legendFormatter(
     this.id));
@@ -108,6 +108,20 @@ var Percent_TC_bg = L.geoJson(null, {
   style: getStyle11,
   onEachFeature: onEachFeature11
 });
+
+var myLayers = {
+    "Percent_TC_bg": Percent_TC_bg,
+    "Percent_TC": Percent_TC,
+    "mean_bmi": mean_bmi,
+    "per_ovw_ob": per_ovw_ob,
+    "per_ob": per_ob,
+    "per_mvpa": per_mvpa,
+    "per_hi_bp": per_hi_bp,
+    "per_type2": per_type2,
+    "per_gdex": per_gdex,
+    "per_asthma": per_asthma,
+    "soc_cohes": soc_cohes
+};
 
 // IMPORT DATA AND APPEND MAP LAYERS
 $.getJSON("sactree_geoms3.json", function(data) {
