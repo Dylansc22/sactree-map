@@ -175,7 +175,7 @@ function mouseclick1(e) {
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
     '</h2><img class="img-responsive" src="legend_tree.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Physical Activity</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
     '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
@@ -240,7 +240,7 @@ function mousemove2(e) {
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
     '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Physical Activity</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
     '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
@@ -305,7 +305,7 @@ function mousemove3(e) {
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
     '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Physical Activity</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
     '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
@@ -370,7 +370,7 @@ function mousemove4(e) {
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
     '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Physical Activity</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
     '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
@@ -435,7 +435,7 @@ function mousemove5(e) {
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
     '</h2><img class="img-responsive" src="legend_positive.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Physical Activity</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
     '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
@@ -500,7 +500,7 @@ function mousemove6(e) {
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
     '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Physical Activity</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
     '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
@@ -565,7 +565,7 @@ function mousemove7(e) {
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
     '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Physical Activity</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
     '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
@@ -630,7 +630,7 @@ function mousemove8(e) {
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
     '</h2><img class="img-responsive" src="legend_positive.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Physical Activity</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
     '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
@@ -695,7 +695,7 @@ function mousemove9(e) {
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
     '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Physical Activity</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
     '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
@@ -760,7 +760,7 @@ function mousemove10(e) {
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
     '</h2><img class="img-responsive" src="legend_positive.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Physical Activity</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
     '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
