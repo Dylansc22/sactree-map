@@ -173,24 +173,24 @@ function onEachFeature1(feature, layer) {
 function mouseclick1(e) {
   var feature = e.target.feature;
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
-    '</h2><img class="img-responsive" src="legend_tree.png"/><hr><table class="table table-condensed"><tr><td>Tree Cover</td><td><b>' +
+    '</h2><img class="img-responsive" src="legend_tree.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
-      .mean_bmi) + '</b></td></tr><tr><td>Overweight/Obese</td><td><b>' +
-    nullFormatter(feature.properties.per_ovw_ob) +
-    '</b></td></tr><tr><td>Obese</td><td><b>' + nullFormatter(feature.properties
-      .per_ob) + '</b></td></tr><tr><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
-    '</b></td></tr><tr><td>High Blood Pressure</td><td><b>' + nullFormatter(
-      feature.properties.per_hi_bp) +
-    '</b></td></tr><tr><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
-      feature.properties.per_type2) +
-    '</b></td></tr><tr><td>Good/Excellent Health</td><td><b>' + nullFormatter(
+    '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
-    '</b></td></tr><tr><td>Asthma</td><td><b>' + nullFormatter(feature.properties
-      .per_asthma) + '</b></td></tr><tr><td>Social Cohesion</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Social Cohesion</td><td><b>' +
     nullFormatter(feature.properties.soc_cohes) +
-    '</b></td></tr></table><hr>';
+    '</b></td></tr><tr class="negative"><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
+      .mean_bmi) + '</b></td></tr><tr class="negative"><td>Overweight/Obese</td><td><b>' +
+    nullFormatter(feature.properties.per_ovw_ob) +
+    '</b></td></tr><tr class="negative"><td>Obese</td><td><b>' + nullFormatter(feature.properties
+      .per_ob) + '</b></td></tr><tr class="negative"><td>High Blood Pressure</td><td><b>' + nullFormatter(
+      feature.properties.per_hi_bp) +
+    '</b></td></tr><tr class="negative"><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
+      feature.properties.per_type2) +
+    '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
+      .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
   //A better way, but not working:
   //document.getElementsByName('path')[0].style.weight=1;
@@ -238,24 +238,24 @@ function onEachFeature2(feature, layer) {
 function mousemove2(e) {
   var feature = e.target.feature;
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
-    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr><td>Tree Cover</td><td><b>' +
+    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
-      .mean_bmi) + '</b></td></tr><tr><td>Overweight/Obese</td><td><b>' +
-    nullFormatter(feature.properties.per_ovw_ob) +
-    '</b></td></tr><tr><td>Obese</td><td><b>' + nullFormatter(feature.properties
-      .per_ob) + '</b></td></tr><tr><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
-    '</b></td></tr><tr><td>High Blood Pressure</td><td><b>' + nullFormatter(
-      feature.properties.per_hi_bp) +
-    '</b></td></tr><tr><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
-      feature.properties.per_type2) +
-    '</b></td></tr><tr><td>Good/Excellent Health</td><td><b>' + nullFormatter(
+    '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
-    '</b></td></tr><tr><td>Asthma</td><td><b>' + nullFormatter(feature.properties
-      .per_asthma) + '</b></td></tr><tr><td>Social Cohesion</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Social Cohesion</td><td><b>' +
     nullFormatter(feature.properties.soc_cohes) +
-    '</b></td></tr></table><hr>';
+    '</b></td></tr><tr class="negative"><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
+      .mean_bmi) + '</b></td></tr><tr class="negative"><td>Overweight/Obese</td><td><b>' +
+    nullFormatter(feature.properties.per_ovw_ob) +
+    '</b></td></tr><tr class="negative"><td>Obese</td><td><b>' + nullFormatter(feature.properties
+      .per_ob) + '</b></td></tr><tr class="negative"><td>High Blood Pressure</td><td><b>' + nullFormatter(
+      feature.properties.per_hi_bp) +
+    '</b></td></tr><tr class="negative"><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
+      feature.properties.per_type2) +
+    '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
+      .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
   //A better way, but not working:
   //document.getElementsByName('path')[0].style.weight=1;
@@ -303,24 +303,24 @@ function onEachFeature3(feature, layer) {
 function mousemove3(e) {
   var feature = e.target.feature;
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
-    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr><td>Tree Cover</td><td><b>' +
+    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
-      .mean_bmi) + '</b></td></tr><tr><td>Overweight/Obese</td><td><b>' +
-    nullFormatter(feature.properties.per_ovw_ob) +
-    '</b></td></tr><tr><td>Obese</td><td><b>' + nullFormatter(feature.properties
-      .per_ob) + '</b></td></tr><tr><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
-    '</b></td></tr><tr><td>High Blood Pressure</td><td><b>' + nullFormatter(
-      feature.properties.per_hi_bp) +
-    '</b></td></tr><tr><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
-      feature.properties.per_type2) +
-    '</b></td></tr><tr><td>Good/Excellent Health</td><td><b>' + nullFormatter(
+    '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
-    '</b></td></tr><tr><td>Asthma</td><td><b>' + nullFormatter(feature.properties
-      .per_asthma) + '</b></td></tr><tr><td>Social Cohesion</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Social Cohesion</td><td><b>' +
     nullFormatter(feature.properties.soc_cohes) +
-    '</b></td></tr></table><hr>';
+    '</b></td></tr><tr class="negative"><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
+      .mean_bmi) + '</b></td></tr><tr class="negative"><td>Overweight/Obese</td><td><b>' +
+    nullFormatter(feature.properties.per_ovw_ob) +
+    '</b></td></tr><tr class="negative"><td>Obese</td><td><b>' + nullFormatter(feature.properties
+      .per_ob) + '</b></td></tr><tr class="negative"><td>High Blood Pressure</td><td><b>' + nullFormatter(
+      feature.properties.per_hi_bp) +
+    '</b></td></tr><tr class="negative"><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
+      feature.properties.per_type2) +
+    '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
+      .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
   //A better way, but not working:
   //document.getElementsByName('path')[0].style.weight=1;
@@ -368,24 +368,24 @@ function onEachFeature4(feature, layer) {
 function mousemove4(e) {
   var feature = e.target.feature;
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
-    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr><td>Tree Cover</td><td><b>' +
+    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
-      .mean_bmi) + '</b></td></tr><tr><td>Overweight/Obese</td><td><b>' +
-    nullFormatter(feature.properties.per_ovw_ob) +
-    '</b></td></tr><tr><td>Obese</td><td><b>' + nullFormatter(feature.properties
-      .per_ob) + '</b></td></tr><tr><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
-    '</b></td></tr><tr><td>High Blood Pressure</td><td><b>' + nullFormatter(
-      feature.properties.per_hi_bp) +
-    '</b></td></tr><tr><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
-      feature.properties.per_type2) +
-    '</b></td></tr><tr><td>Good/Excellent Health</td><td><b>' + nullFormatter(
+    '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
-    '</b></td></tr><tr><td>Asthma</td><td><b>' + nullFormatter(feature.properties
-      .per_asthma) + '</b></td></tr><tr><td>Social Cohesion</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Social Cohesion</td><td><b>' +
     nullFormatter(feature.properties.soc_cohes) +
-    '</b></td></tr></table><hr>';
+    '</b></td></tr><tr class="negative"><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
+      .mean_bmi) + '</b></td></tr><tr class="negative"><td>Overweight/Obese</td><td><b>' +
+    nullFormatter(feature.properties.per_ovw_ob) +
+    '</b></td></tr><tr class="negative"><td>Obese</td><td><b>' + nullFormatter(feature.properties
+      .per_ob) + '</b></td></tr><tr class="negative"><td>High Blood Pressure</td><td><b>' + nullFormatter(
+      feature.properties.per_hi_bp) +
+    '</b></td></tr><tr class="negative"><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
+      feature.properties.per_type2) +
+    '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
+      .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
   //A better way, but not working:
   //document.getElementsByName('path')[0].style.weight=1;
@@ -433,24 +433,24 @@ function onEachFeature5(feature, layer) {
 function mousemove5(e) {
   var feature = e.target.feature;
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
-    '</h2><img class="img-responsive" src="legend_positive.png"/><hr><table class="table table-condensed"><tr><td>Tree Cover</td><td><b>' +
+    '</h2><img class="img-responsive" src="legend_positive.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
-      .mean_bmi) + '</b></td></tr><tr><td>Overweight/Obese</td><td><b>' +
-    nullFormatter(feature.properties.per_ovw_ob) +
-    '</b></td></tr><tr><td>Obese</td><td><b>' + nullFormatter(feature.properties
-      .per_ob) + '</b></td></tr><tr><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
-    '</b></td></tr><tr><td>High Blood Pressure</td><td><b>' + nullFormatter(
-      feature.properties.per_hi_bp) +
-    '</b></td></tr><tr><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
-      feature.properties.per_type2) +
-    '</b></td></tr><tr><td>Good/Excellent Health</td><td><b>' + nullFormatter(
+    '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
-    '</b></td></tr><tr><td>Asthma</td><td><b>' + nullFormatter(feature.properties
-      .per_asthma) + '</b></td></tr><tr><td>Social Cohesion</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Social Cohesion</td><td><b>' +
     nullFormatter(feature.properties.soc_cohes) +
-    '</b></td></tr></table><hr>';
+    '</b></td></tr><tr class="negative"><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
+      .mean_bmi) + '</b></td></tr><tr class="negative"><td>Overweight/Obese</td><td><b>' +
+    nullFormatter(feature.properties.per_ovw_ob) +
+    '</b></td></tr><tr class="negative"><td>Obese</td><td><b>' + nullFormatter(feature.properties
+      .per_ob) + '</b></td></tr><tr class="negative"><td>High Blood Pressure</td><td><b>' + nullFormatter(
+      feature.properties.per_hi_bp) +
+    '</b></td></tr><tr class="negative"><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
+      feature.properties.per_type2) +
+    '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
+      .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
   //A better way, but not working:
   //document.getElementsByName('path')[0].style.weight=1;
@@ -498,24 +498,24 @@ function onEachFeature6(feature, layer) {
 function mousemove6(e) {
   var feature = e.target.feature;
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
-    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr><td>Tree Cover</td><td><b>' +
+    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
-      .mean_bmi) + '</b></td></tr><tr><td>Overweight/Obese</td><td><b>' +
-    nullFormatter(feature.properties.per_ovw_ob) +
-    '</b></td></tr><tr><td>Obese</td><td><b>' + nullFormatter(feature.properties
-      .per_ob) + '</b></td></tr><tr><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
-    '</b></td></tr><tr><td>High Blood Pressure</td><td><b>' + nullFormatter(
-      feature.properties.per_hi_bp) +
-    '</b></td></tr><tr><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
-      feature.properties.per_type2) +
-    '</b></td></tr><tr><td>Good/Excellent Health</td><td><b>' + nullFormatter(
+    '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
-    '</b></td></tr><tr><td>Asthma</td><td><b>' + nullFormatter(feature.properties
-      .per_asthma) + '</b></td></tr><tr><td>Social Cohesion</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Social Cohesion</td><td><b>' +
     nullFormatter(feature.properties.soc_cohes) +
-    '</b></td></tr></table><hr>';
+    '</b></td></tr><tr class="negative"><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
+      .mean_bmi) + '</b></td></tr><tr class="negative"><td>Overweight/Obese</td><td><b>' +
+    nullFormatter(feature.properties.per_ovw_ob) +
+    '</b></td></tr><tr class="negative"><td>Obese</td><td><b>' + nullFormatter(feature.properties
+      .per_ob) + '</b></td></tr><tr class="negative"><td>High Blood Pressure</td><td><b>' + nullFormatter(
+      feature.properties.per_hi_bp) +
+    '</b></td></tr><tr class="negative"><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
+      feature.properties.per_type2) +
+    '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
+      .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
   //A better way, but not working:
   //document.getElementsByName('path')[0].style.weight=1;
@@ -563,24 +563,24 @@ function onEachFeature7(feature, layer) {
 function mousemove7(e) {
   var feature = e.target.feature;
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
-    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr><td>Tree Cover</td><td><b>' +
+    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
-      .mean_bmi) + '</b></td></tr><tr><td>Overweight/Obese</td><td><b>' +
-    nullFormatter(feature.properties.per_ovw_ob) +
-    '</b></td></tr><tr><td>Obese</td><td><b>' + nullFormatter(feature.properties
-      .per_ob) + '</b></td></tr><tr><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
-    '</b></td></tr><tr><td>High Blood Pressure</td><td><b>' + nullFormatter(
-      feature.properties.per_hi_bp) +
-    '</b></td></tr><tr><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
-      feature.properties.per_type2) +
-    '</b></td></tr><tr><td>Good/Excellent Health</td><td><b>' + nullFormatter(
+    '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
-    '</b></td></tr><tr><td>Asthma</td><td><b>' + nullFormatter(feature.properties
-      .per_asthma) + '</b></td></tr><tr><td>Social Cohesion</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Social Cohesion</td><td><b>' +
     nullFormatter(feature.properties.soc_cohes) +
-    '</b></td></tr></table><hr>';
+    '</b></td></tr><tr class="negative"><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
+      .mean_bmi) + '</b></td></tr><tr class="negative"><td>Overweight/Obese</td><td><b>' +
+    nullFormatter(feature.properties.per_ovw_ob) +
+    '</b></td></tr><tr class="negative"><td>Obese</td><td><b>' + nullFormatter(feature.properties
+      .per_ob) + '</b></td></tr><tr class="negative"><td>High Blood Pressure</td><td><b>' + nullFormatter(
+      feature.properties.per_hi_bp) +
+    '</b></td></tr><tr class="negative"><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
+      feature.properties.per_type2) +
+    '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
+      .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
   //A better way, but not working:
   //document.getElementsByName('path')[0].style.weight=1;
@@ -628,24 +628,24 @@ function onEachFeature8(feature, layer) {
 function mousemove8(e) {
   var feature = e.target.feature;
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
-    '</h2><img class="img-responsive" src="legend_positive.png"/><hr><table class="table table-condensed"><tr><td>Tree Cover</td><td><b>' +
+    '</h2><img class="img-responsive" src="legend_positive.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
-      .mean_bmi) + '</b></td></tr><tr><td>Overweight/Obese</td><td><b>' +
-    nullFormatter(feature.properties.per_ovw_ob) +
-    '</b></td></tr><tr><td>Obese</td><td><b>' + nullFormatter(feature.properties
-      .per_ob) + '</b></td></tr><tr><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
-    '</b></td></tr><tr><td>High Blood Pressure</td><td><b>' + nullFormatter(
-      feature.properties.per_hi_bp) +
-    '</b></td></tr><tr><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
-      feature.properties.per_type2) +
-    '</b></td></tr><tr><td>Good/Excellent Health</td><td><b>' + nullFormatter(
+    '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
-    '</b></td></tr><tr><td>Asthma</td><td><b>' + nullFormatter(feature.properties
-      .per_asthma) + '</b></td></tr><tr><td>Social Cohesion</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Social Cohesion</td><td><b>' +
     nullFormatter(feature.properties.soc_cohes) +
-    '</b></td></tr></table><hr>';
+    '</b></td></tr><tr class="negative"><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
+      .mean_bmi) + '</b></td></tr><tr class="negative"><td>Overweight/Obese</td><td><b>' +
+    nullFormatter(feature.properties.per_ovw_ob) +
+    '</b></td></tr><tr class="negative"><td>Obese</td><td><b>' + nullFormatter(feature.properties
+      .per_ob) + '</b></td></tr><tr class="negative"><td>High Blood Pressure</td><td><b>' + nullFormatter(
+      feature.properties.per_hi_bp) +
+    '</b></td></tr><tr class="negative"><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
+      feature.properties.per_type2) +
+    '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
+      .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
   //A better way, but not working:
   //document.getElementsByName('path')[0].style.weight=1;
@@ -693,24 +693,24 @@ function onEachFeature9(feature, layer) {
 function mousemove9(e) {
   var feature = e.target.feature;
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
-    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr><td>Tree Cover</td><td><b>' +
+    '</h2><img class="img-responsive" src="legend_negative.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
-      .mean_bmi) + '</b></td></tr><tr><td>Overweight/Obese</td><td><b>' +
-    nullFormatter(feature.properties.per_ovw_ob) +
-    '</b></td></tr><tr><td>Obese</td><td><b>' + nullFormatter(feature.properties
-      .per_ob) + '</b></td></tr><tr><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
-    '</b></td></tr><tr><td>High Blood Pressure</td><td><b>' + nullFormatter(
-      feature.properties.per_hi_bp) +
-    '</b></td></tr><tr><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
-      feature.properties.per_type2) +
-    '</b></td></tr><tr><td>Good/Excellent Health</td><td><b>' + nullFormatter(
+    '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
-    '</b></td></tr><tr><td>Asthma</td><td><b>' + nullFormatter(feature.properties
-      .per_asthma) + '</b></td></tr><tr><td>Social Cohesion</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Social Cohesion</td><td><b>' +
     nullFormatter(feature.properties.soc_cohes) +
-    '</b></td></tr></table><hr>';
+    '</b></td></tr><tr class="negative"><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
+      .mean_bmi) + '</b></td></tr><tr class="negative"><td>Overweight/Obese</td><td><b>' +
+    nullFormatter(feature.properties.per_ovw_ob) +
+    '</b></td></tr><tr class="negative"><td>Obese</td><td><b>' + nullFormatter(feature.properties
+      .per_ob) + '</b></td></tr><tr class="negative"><td>High Blood Pressure</td><td><b>' + nullFormatter(
+      feature.properties.per_hi_bp) +
+    '</b></td></tr><tr class="negative"><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
+      feature.properties.per_type2) +
+    '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
+      .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
   //A better way, but not working:
   //document.getElementsByName('path')[0].style.weight=1;
@@ -758,24 +758,24 @@ function onEachFeature10(feature, layer) {
 function mousemove10(e) {
   var feature = e.target.feature;
   info = '<h2>' + feature.properties.NAME + ' - ' + feature.properties.ID +
-    '</h2><img class="img-responsive" src="legend_positive.png"/><hr><table class="table table-condensed"><tr><td>Tree Cover</td><td><b>' +
+    '</h2><img class="img-responsive" src="legend_positive.png"/><hr><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td><b>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b></td></tr><tr><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
-      .mean_bmi) + '</b></td></tr><tr><td>Overweight/Obese</td><td><b>' +
-    nullFormatter(feature.properties.per_ovw_ob) +
-    '</b></td></tr><tr><td>Obese</td><td><b>' + nullFormatter(feature.properties
-      .per_ob) + '</b></td></tr><tr><td>>150min MVPA/wk</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>>150min MVPA/wk</td><td><b>' +
     nullFormatter(feature.properties.per_mvpa) +
-    '</b></td></tr><tr><td>High Blood Pressure</td><td><b>' + nullFormatter(
-      feature.properties.per_hi_bp) +
-    '</b></td></tr><tr><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
-      feature.properties.per_type2) +
-    '</b></td></tr><tr><td>Good/Excellent Health</td><td><b>' + nullFormatter(
+    '</b></td></tr><tr class="positive"><td>Good/Excellent Health</td><td><b>' + nullFormatter(
       feature.properties.per_gdex) +
-    '</b></td></tr><tr><td>Asthma</td><td><b>' + nullFormatter(feature.properties
-      .per_asthma) + '</b></td></tr><tr><td>Social Cohesion</td><td><b>' +
+    '</b></td></tr><tr class="positive"><td>Social Cohesion</td><td><b>' +
     nullFormatter(feature.properties.soc_cohes) +
-    '</b></td></tr></table><hr>';
+    '</b></td></tr><tr class="negative"><td>Mean BMI</td><td><b>' + bmiFormatter(feature.properties
+      .mean_bmi) + '</b></td></tr><tr class="negative"><td>Overweight/Obese</td><td><b>' +
+    nullFormatter(feature.properties.per_ovw_ob) +
+    '</b></td></tr><tr class="negative"><td>Obese</td><td><b>' + nullFormatter(feature.properties
+      .per_ob) + '</b></td></tr><tr class="negative"><td>High Blood Pressure</td><td><b>' + nullFormatter(
+      feature.properties.per_hi_bp) +
+    '</b></td></tr><tr class="negative"><td>Type 2 Diabetes</td><td><b>' + nullFormatter(
+      feature.properties.per_type2) +
+    '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
+      .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
   //A better way, but not working:
   //document.getElementsByName('path')[0].style.weight=1;
@@ -823,9 +823,9 @@ function onEachFeature11(feature, layer) {
 function mousemove11(e) {
   var feature = e.target.feature;
   info = '<h2>Census Block Group: ' + feature.properties.GEOID10 +
-    '</h2><img class="img-responsive" src="legend_tree.png"/><hr>Tree Cover: <b>' +
+    '</h2><img class="img-responsive" src="legend_tree.png"/><table class="table table-condensed"><tr class="tree"><td>Tree Cover</td><td>' +
     nullFormatter(feature.properties.Percent_TC) +
-    '</b><br><small><i>Select other layers for additional information, including health outcomes.</i></small><hr>';
+    '</td></tr></table><small><i>Select other layers for additional information, including health outcomes.</i></small><hr>';
   document.getElementById('infobits').innerHTML = info;
   //A better way, but not working:
   //document.getElementsByName('path')[0].style.weight=1;

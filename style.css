@@ -75,6 +75,21 @@ a.active {
   top:-5px;
 }
 
+tr.tree {
+  background-color: #5CB85C;
+  color: #fff;
+}
+
+tr.negative {
+  background-color: #D9534F;
+  color: #fff;
+}
+
+tr.positive {
+  background-color: #428BCA;
+  color: #fff;
+}
+
 @media (max-width:640px) {
     
   #content {
