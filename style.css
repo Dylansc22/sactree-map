@@ -90,6 +90,10 @@ tr.positive {
   color: #fff;
 }
 
+small.insufficient {
+  font-size: 70%;
+}
+
 @media (max-width:640px) {
     
   #content {

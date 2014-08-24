@@ -8,11 +8,11 @@ $(function () { $('#collapseOne').collapse({
 // FORMATTERS:
 // STANDARDIZE VARIABLES
 function nullFormatter(e) {
-  return e > 100 ? '<i><small>Insufficient Data<small></i>' : e > 0 && e <= 1 ?
+  return e > 100 ? '<small class="insufficient">Insuf. Data<small>' : e > 0 && e <= 1 ?
     Math.round(e * 100).toFixed(0) + '%' : Math.round(e).toFixed(0) + '%';
 };
 function bmiFormatter(e) {
-  return e > 100 ? '<i><small>Insufficient Data<small></i>' : e;
+  return e > 100 ? '<small class="insufficient">Insuf. Data<small>' : e;
 };
 
 // DECIDE WHICH LEGEND TO USE WHEN SWITCHING LAYERS
