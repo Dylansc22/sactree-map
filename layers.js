@@ -65,7 +65,7 @@ popup = new L.Popup({
 var closeTooltip;
 var info;
 document.getElementById('infobits').innerHTML =
-  '<h2>Tree Cover - Block Groups</h2><hr><img class="img-responsive" src="legend_tree.png"/><hr><h4>Click on the map to learn more about tree cover or health outcomes at the zipcode level.</h4><hr>';
+  '<h2>Tree Cover - Census Block Groups</h2><hr><img class="img-responsive" src="legend_tree.png"/><hr><h4>Click on the map to learn more about tree cover or health outcomes at the zipcode level.</h4><hr>';
 
 // DEFINE MAP LAYERS
 var mean_bmi = L.geoJson(null, {
