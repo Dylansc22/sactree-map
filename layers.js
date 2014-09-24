@@ -145,7 +145,10 @@ $.getJSON("sactree_geoms3.json", function(data) {
 });
 map.addLayer(Percent_TC_bg);
 
-// DEFINE THE STYLE AND BEHAVIOR OF EACH LAYER (THEN LEARN RECURSION, DAMMIT)
+// BRING IN SEPARATE DATA FOR SS QUINTILE PARSING
+
+
+// DEFINE THE STYLE AND BEHAVIOR OF EACH LAYER
 // 1 - Percent_TC
 function getStyle1(feature) {
   return {
@@ -158,9 +161,14 @@ function getStyle1(feature) {
 }
 
 function getColor1(d) {
-  return d > 100 ? 'rgba(0,0,0,0)' : d > 30.6917 ? '#588125' : d > 23.6632 ?
-    '#729B3F' : d > 15.7562 ? '#8BB458' : d > 9.8709 ? '#A5CE72' : d > 5.4646 ?
-    '#BEE78B' : d > 1.7676 ? '#D7FFA4' : '#fff';
+  return d > 100 ? 'rgba(0,0,0,0)' 
+    : d > 30.6917 ? '#588125' 
+    : d > 23.6632 ? '#729B3F' 
+    : d > 15.7562 ? '#8BB458' 
+    : d > 9.8709 ? '#A5CE72' 
+    : d > 5.4646 ? '#BEE78B' 
+    : d > 1.7676 ? '#D7FFA4' 
+    : '#fff';
 }
 
 function onEachFeature1(feature, layer) {
