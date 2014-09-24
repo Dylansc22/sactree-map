@@ -23,6 +23,53 @@ function legendFormatter(f) {
     '<img class="img-responsive" src="legend_positive.png"/>' :
     '<img class="img-responsive" src="legend_negative.png"/>'
 };
+
+// FORMAT COLOR SCHEME BY QUANTILE
+function getColorNegative(d) {
+  return d > 100 ? 'rgba(0,0,0,0)'
+    : d > ss.quantile(range,0.8) ? '#ff3030'
+    : d > ss.quantile(range,0.6) ? '#ff7b68'
+    : d > ss.quantile(range,0.4) ? '#ffac9b'
+    : d > ss.quantile(range,0.2) ? '#ffd6cd'
+    : d > ss.min(range) ? '#ffffff'
+    : '#ffffff';
+}
+
+function getColorPositive(d) {
+  return d > 100 ? 'rgba(0,0,0,0)'
+    : d > ss.quantile(range,0.8) ? '#4682b4'
+    : d > ss.quantile(range,0.6) ? '#7a9fc7'
+    : d > ss.quantile(range,0.4) ? '#a7bfd9'
+    : d > ss.quantile(range,0.2) ? '#d4deec'
+    : d > ss.min(range) ? '#ffffff'
+    : '#ffffff';
+}
+
+// BRING IN SEPARATE DATA FOR SS QUINTILE PARSING
+var range,
+  mean_bmi_range,
+  per_ovw_ob_range,
+  per_ob_range,
+  per_mvpa_range,
+  per_hi_bp_range,
+  per_type2_range,
+  per_gdex_range,
+  per_asthma_range,
+  soc_cohes_range;
+
+// ASSIGN RANGES
+$.getJSON("sactree_ranges.json", function(data) {
+  mean_bmi_range = data.bmi;
+  per_ovw_ob_range = data.ovw_ob;
+  per_ob_range = data.ob;
+  per_mvpa_range = data.mvpa;
+  per_hi_bp_range = data.hi_bp;
+  per_type2_range = data.type2;
+  per_gdex_range = data.good_exc;
+  per_asthma_range = data.asthma;
+  soc_cohes_range = data.soc_coh;
+});
+
 // DEFINE MAP, ADD BASELAYER AND PLUGINS
 L.mapbox.accessToken =
   'pk.eyJ1IjoibGFuZHBsYW5uZXIiLCJhIjoicUtlZGgwYyJ9.UFYz8MD4lI4kIzk9bjGFvg'
@@ -44,10 +91,11 @@ topPane.appendChild(topLayer.getContainer());
 topLayer.setZIndex(7);
 
 // ADD THE LAYER CONTROL FUNCTION
+var oldLayer,newLayer;
 $('.layer').click(function() {
-  var oldLayer = myLayers[$('.active').attr('id')];
-  var newLayer = myLayers[$(this).attr('id')];
-  console.log(oldLayer + ' --> ' + newLayer);
+  oldLayer = myLayers[$('.active').attr('id')];
+  newLayer = myLayers[$(this).attr('id')];
+  console.log($('.active').attr('id') + ' --> ' + $(this).attr('id'));
   $('#infobits').html('<h2>' + this.text + '</h2><hr>' + legendFormatter(
     this.id));
   map.removeLayer(oldLayer);
@@ -128,7 +176,7 @@ var myLayers = {
 };
 
 // IMPORT DATA AND APPEND MAP LAYERS
-$.getJSON("sactree_geoms3.json", function(data) {
+$.getJSON("sactree_geoms4.json", function(data) {
   zips_geojson = topojson.feature(data, data.objects.zips).features;
   bgs_geojson = topojson.feature(data, data.objects.bgs).features;
   mean_bmi.addData(zips_geojson);
@@ -144,9 +192,6 @@ $.getJSON("sactree_geoms3.json", function(data) {
   Percent_TC_bg.addData(bgs_geojson);
 });
 map.addLayer(Percent_TC_bg);
-
-// BRING IN SEPARATE DATA FOR SS QUINTILE PARSING
-
 
 // DEFINE THE STYLE AND BEHAVIOR OF EACH LAYER
 // 1 - Percent_TC
@@ -221,19 +266,14 @@ function mouseout1(e) {
   // 2 - mean_bmi
 
 function getStyle2(feature) {
+  range = mean_bmi_range;
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColor2(feature.properties.mean_bmi)
+    fillColor: getColorNegative(feature.properties.mean_bmi)
   };
-}
-
-function getColor2(d) {
-  return d > 100 ? 'rgba(0,0,0,0)' : d > 30.4000 ? '#ff3030' : d > 28.7100 ?
-    '#ff6756' : d > 27.4300 ? '#ff8c79' : d > 26.3700 ? '#ffac9b' : d > 25.1900 ?
-    '#ffc8bc' : d > 23.9100 ? '#ffe5de' : '#ffffff';
 }
 
 function onEachFeature2(feature, layer) {
@@ -286,19 +326,14 @@ function mouseout2(e) {
   // 3 - per_ovw_ob
 
 function getStyle3(feature) {
+  range = per_ovw_ob_range;
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColor3(feature.properties.per_ovw_ob)
+    fillColor: getColorNegative(feature.properties.per_ovw_ob)
   };
-}
-
-function getColor3(d) {
-  return d > 1 ? 'rgba(0,0,0,0)' : d > 0.8500 ? '#ff3030' : d > 0.7100 ?
-    '#ff6756' : d > 0.6200 ? '#ff8c79' : d > 0.5400 ? '#ffac9b' : d > 0.4500 ?
-    '#ffc8bc' : d > 0.3700 ? '#ffe5de' : '#ffffff';
 }
 
 function onEachFeature3(feature, layer) {
@@ -351,19 +386,14 @@ function mouseout3(e) {
   // 4 - per_ob
 
 function getStyle4(feature) {
+  range = per_ob_range;
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColor4(feature.properties.per_ob)
+    fillColor: getColorNegative(feature.properties.per_ob)
   };
-}
-
-function getColor4(d) {
-  return d > 1 ? 'rgba(0,0,0,0)' : d > 0.4700 ? '#ff3030' : d > 0.3800 ?
-    '#ff6756' : d > 0.3000 ? '#ff8c79' : d > 0.2300 ? '#ffac9b' : d > 0.1700 ?
-    '#ffc8bc' : d > 0.0400 ? '#ffe5de' : '#ffffff';
 }
 
 function onEachFeature4(feature, layer) {
@@ -416,19 +446,14 @@ function mouseout4(e) {
   // 5 - per_mvpa
 
 function getStyle5(feature) {
+  range = per_mvpa_range;
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColor5(feature.properties.per_mvpa)
+    fillColor: getColorPositive(feature.properties.per_mvpa)
   };
-}
-
-function getColor5(d) {
-  return d > 1 ? 'rgba(0,0,0,0)' : d > 0.7500 ? '#4682b4' : d > 0.6600 ?
-    '#6a95c0' : d > 0.6000 ? '#89aacd' : d > 0.5400 ? '#a7bfd9' : d > 0.4400 ?
-    '#c5d4e6' : d > 0.2400 ? '#e2e9f2' : '#ffffff';
 }
 
 function onEachFeature5(feature, layer) {
@@ -481,19 +506,14 @@ function mouseout5(e) {
   // 6 - per_hi_bp
 
 function getStyle6(feature) {
+  range = per_hi_bp_range;
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColor6(feature.properties.per_hi_bp)
+    fillColor: getColorNegative(feature.properties.per_hi_bp)
   };
-}
-
-function getColor6(d) {
-  return d > 1 ? 'rgba(0,0,0,0)' : d > 0.3400 ? '#ff3030' : d > 0.2800 ?
-    '#ff6756' : d > 0.2200 ? '#ff8c79' : d > 0.1600 ? '#ffac9b' : d > 0.100 ?
-    '#ffc8bc' : '#ffffff';
 }
 
 function onEachFeature6(feature, layer) {
@@ -546,19 +566,14 @@ function mouseout6(e) {
   // 7 - per_type2
 
 function getStyle7(feature) {
+  range = per_type2_range;
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColor7(feature.properties.per_type2)
+    fillColor: getColorNegative(feature.properties.per_type2)
   };
-}
-
-function getColor7(d) {
-  return d > 1 ? 'rgba(0,0,0,0)' : d > 0.1600 ? '#ff3030' : d > 0.0800 ?
-    '#ff6756' : d > 0.06000 ? '#ff8c79' : d > 0.0400 ? '#ffac9b' : d > 0.0200 ?
-    '#ffc8bc' : d > 0.0100 ? '#ffe5de' : '#ffffff';
 }
 
 function onEachFeature7(feature, layer) {
@@ -611,19 +626,14 @@ function mouseout7(e) {
   // 8 - per_gdex
 
 function getStyle8(feature) {
+  range = per_gdex_range;
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColor8(feature.properties.per_gdex)
+    fillColor: getColorPositive(feature.properties.per_gdex)
   };
-}
-
-function getColor8(d) {
-  return d > 1 ? 'rgba(0,0,0,0)' : d > 0.9 ? '#4682b4' : d > 0.84 ? '#6a95c0' :
-    d > 0.8 ? '#89aacd' : d > 0.75 ? '#a7bfd9' : d > 0.7 ? '#c5d4e6' : d > 0.56 ?
-    '#e2e9f2' : '#ffffff';
 }
 
 function onEachFeature8(feature, layer) {
@@ -676,19 +686,14 @@ function mouseout8(e) {
   // 9 - per_asthma
 
 function getStyle9(feature) {
+  range = per_asthma_range;
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColor9(feature.properties.per_asthma)
+    fillColor: getColorNegative(feature.properties.per_asthma)
   };
-}
-
-function getColor9(d) {
-  return d > 1 ? 'rgba(0,0,0,0)' : d > 0.2800 ? '#ff3030' : d > 0.1700 ?
-    '#ff6756' : d > 0.13000 ? '#ff8c79' : d > 0.100 ? '#ffac9b' : d > 0.0700 ?
-    '#ffc8bc' : d > 0.0200 ? '#ffe5de' : '#ffffff';
 }
 
 function onEachFeature9(feature, layer) {
@@ -741,19 +746,14 @@ function mouseout9(e) {
   // 10 - soc_cohes
 
 function getStyle10(feature) {
+  range = soc_cohes_range;
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColor10(feature.properties.soc_cohes)
+    fillColor: getColorPositive(feature.properties.soc_cohes)
   };
-}
-
-function getColor10(d) {
-  return d > 1 ? 'rgba(0,0,0,0)' : d > 0.9380 ? '#4682b4' : d > 0.8300 ?
-    '#6a95c0' : d > 0.7320 ? '#89aacd' : d > 0.6370 ? '#a7bfd9' : d > 0.5520 ?
-    '#c5d4e6' : d > 0.3150 ? '#e2e9f2' : '#ffffff';
 }
 
 function onEachFeature10(feature, layer) {
