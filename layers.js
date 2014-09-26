@@ -27,21 +27,21 @@ function legendFormatter(f) {
 // FORMAT COLOR SCHEME BY QUANTILE
 function getColorNegative(d) {
   return d > 100 ? 'rgba(0,0,0,0)'
-    : d > ss.quantile(range,0.8) ? '#ff3030'
-    : d > ss.quantile(range,0.6) ? '#ff7b68'
-    : d > ss.quantile(range,0.4) ? '#ffac9b'
-    : d > ss.quantile(range,0.2) ? '#ffd6cd'
-    : d > ss.min(range) ? '#ffffff'
+    : d > ss.quantile(range,0.8) && d <= 100 ? '#ff3030'
+    : d > ss.quantile(range,0.6) && d <= ss.quantile(range,0.8) ? '#ff7b68'
+    : d > ss.quantile(range,0.4) && d <= ss.quantile(range,0.6) ? '#ffac9b'
+    : d > ss.quantile(range,0.2) && d <= ss.quantile(range,0.4) ? '#ffd6cd'
+    : d > ss.min(range) && d <= ss.quantile(range,0.2) ? '#ffffff'
     : '#ffffff';
 }
 
 function getColorPositive(d) {
   return d > 100 ? 'rgba(0,0,0,0)'
-    : d > ss.quantile(range,0.8) ? '#4682b4'
-    : d > ss.quantile(range,0.6) ? '#7a9fc7'
-    : d > ss.quantile(range,0.4) ? '#a7bfd9'
-    : d > ss.quantile(range,0.2) ? '#d4deec'
-    : d > ss.min(range) ? '#ffffff'
+    : d > ss.quantile(range,0.8) && d <= 100 ? '#4682b4'
+    : d > ss.quantile(range,0.6) && d <= ss.quantile(range,0.8) ? '#7a9fc7'
+    : d > ss.quantile(range,0.4) && d <= ss.quantile(range,0.6) ? '#a7bfd9'
+    : d > ss.quantile(range,0.2) && d <= ss.quantile(range,0.4) ? '#d4deec'
+    : ss.min(range) && d <= ss.quantile(range,0.2) ? '#ffffff'
     : '#ffffff';
 }
 
@@ -687,6 +687,7 @@ function mouseout8(e) {
 
 function getStyle9(feature) {
   range = per_asthma_range;
+  console.log(ss.quantile(range,0.8),ss.quantile(range,0.6),ss.quantile(range,0.4),ss.quantile(range,0.2),range.length);
   return {
     weight: 1,
     opacity: 0.8,
