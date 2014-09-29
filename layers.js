@@ -37,11 +37,11 @@ function getColorNegative(d) {
 
 function getColorPositive(d) {
   return d > 100 ? 'rgba(0,0,0,0)'
-    : d > ss.quantile(range,0.8) && d <= 100 ? '#4682b4'
-    : d > ss.quantile(range,0.6) && d <= ss.quantile(range,0.8) ? '#7a9fc7'
-    : d > ss.quantile(range,0.4) && d <= ss.quantile(range,0.6) ? '#a7bfd9'
-    : d > ss.quantile(range,0.2) && d <= ss.quantile(range,0.4) ? '#d4deec'
-    : ss.min(range) && d <= ss.quantile(range,0.2) ? '#ffffff'
+    : d >= ss.quantile(range,0.8) && d < 100 ? '#4682b4'
+    : d >= ss.quantile(range,0.6) && d < ss.quantile(range,0.8) ? '#7a9fc7'
+    : d >= ss.quantile(range,0.4) && d < ss.quantile(range,0.6) ? '#a7bfd9'
+    : d >= ss.quantile(range,0.2) && d < ss.quantile(range,0.4) ? '#d4deec'
+    : ss.min(range) && d < ss.quantile(range,0.2) ? '#ffffff'
     : '#ffffff';
 }
 
@@ -58,16 +58,34 @@ var range,
   soc_cohes_range;
 
 // ASSIGN RANGES
-$.getJSON("sactree_ranges.json", function(data) {
-  mean_bmi_range = data.bmi;
-  per_ovw_ob_range = data.ovw_ob;
-  per_ob_range = data.ob;
-  per_mvpa_range = data.mvpa;
-  per_hi_bp_range = data.hi_bp;
-  per_type2_range = data.type2;
-  per_gdex_range = data.good_exc;
-  per_asthma_range = data.asthma;
-  soc_cohes_range = data.soc_coh;
+$.getJSON("sactree_geoms4.json", function(data) {
+  var objectGroup = data.objects.zips.geometries;
+  // IF NECESSARY, A UTILITY TO SHORTEN THE ARRAYS
+  var cleanUp = function (fieldName) {
+    for (var i=fieldName.length - 1; i >=0; i--) {
+      if ( fieldName[i] === undefined ) {
+          fieldName.splice(i,1);
+      }
+    }
+  };
+  // MAKE THIS WORK TO SAVE SPACE:
+  /*var parsedOut = function(fieldName) {
+    objectGroup.map(function (d) {
+      if (d.properties.fieldName < 100) return d.properties.fieldName 
+    })
+  };*/
+  mean_bmi_range = objectGroup.map(function (d) { if (d.properties.mean_bmi.typeof !== 'undefined' && d.properties.mean_bmi < 100) return d.properties.mean_bmi });
+per_ovw_ob_range = objectGroup.map(function (d) { if (d.properties.per_ovw_ob.typeof !== 'undefined' && d.properties.per_ovw_ob < 100) return d.properties.per_ovw_ob });
+per_ob_range = objectGroup.map(function (d) { if (d.properties.per_ob.typeof !== 'undefined' && d.properties.per_ob < 100) return d.properties.per_ob });
+per_mvpa_range = objectGroup.map(function (d) { if (d.properties.per_mvpa.typeof !== 'undefined' && d.properties.per_mvpa < 100) return d.properties.per_mvpa });
+per_hi_bp_range = objectGroup.map(function (d) { if (d.properties.per_hi_bp.typeof !== 'undefined' && d.properties.per_hi_bp < 100) return d.properties.per_hi_bp });
+per_type2_range = objectGroup.map(function (d) { if (d.properties.per_type2.typeof !== 'undefined' && d.properties.per_type2 < 100) return d.properties.per_type2 });
+per_gdex_range = objectGroup.map(function (d) { if (d.properties.per_gdex.typeof !== 'undefined' && d.properties.per_gdex < 100) return d.properties.per_gdex });
+per_asthma_range = objectGroup.map(function (d) { if (d.properties.per_asthma.typeof !== 'undefined' && d.properties.per_asthma < 100) return d.properties.per_asthma });
+soc_cohes_range = objectGroup.map(function (d) { if (d.properties.soc_cohes.typeof !== 'undefined' && d.properties.soc_cohes < 100) return d.properties.soc_cohes });
+  console.log('1. ', cleanUp(soc_cohes_range));
+  console.log('2. ', per_gdex_range);
+  console.log('3. ', ss.quantile(per_asthma_range,0.8),ss.quantile(per_asthma_range,0.6),ss.quantile(per_asthma_range,0.4),ss.quantile(per_asthma_range,0.2));
 });
 
 // DEFINE MAP, ADD BASELAYER AND PLUGINS
@@ -687,7 +705,6 @@ function mouseout8(e) {
 
 function getStyle9(feature) {
   range = per_asthma_range;
-  console.log(ss.quantile(range,0.8),ss.quantile(range,0.6),ss.quantile(range,0.4),ss.quantile(range,0.2),range.length);
   return {
     weight: 1,
     opacity: 0.8,
