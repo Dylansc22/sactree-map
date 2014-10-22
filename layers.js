@@ -41,7 +41,6 @@ function getColorPositive(d) {
     : d >= ss.quantile(range,0.6) && d < ss.quantile(range,0.8) ? '#7a9fc7'
     : d >= ss.quantile(range,0.4) && d < ss.quantile(range,0.6) ? '#a7bfd9'
     : d >= ss.quantile(range,0.2) && d < ss.quantile(range,0.4) ? '#d4deec'
-    : ss.min(range) && d < ss.quantile(range,0.2) ? '#ffffff'
     : '#ffffff';
 }
 
@@ -75,17 +74,15 @@ $.getJSON("sactree_geoms4.json", function(data) {
     })
   };*/
   mean_bmi_range = objectGroup.map(function (d) { if (d.properties.mean_bmi.typeof !== 'undefined' && d.properties.mean_bmi < 100) return d.properties.mean_bmi });
-per_ovw_ob_range = objectGroup.map(function (d) { if (d.properties.per_ovw_ob.typeof !== 'undefined' && d.properties.per_ovw_ob < 100) return d.properties.per_ovw_ob });
-per_ob_range = objectGroup.map(function (d) { if (d.properties.per_ob.typeof !== 'undefined' && d.properties.per_ob < 100) return d.properties.per_ob });
-per_mvpa_range = objectGroup.map(function (d) { if (d.properties.per_mvpa.typeof !== 'undefined' && d.properties.per_mvpa < 100) return d.properties.per_mvpa });
-per_hi_bp_range = objectGroup.map(function (d) { if (d.properties.per_hi_bp.typeof !== 'undefined' && d.properties.per_hi_bp < 100) return d.properties.per_hi_bp });
-per_type2_range = objectGroup.map(function (d) { if (d.properties.per_type2.typeof !== 'undefined' && d.properties.per_type2 < 100) return d.properties.per_type2 });
-per_gdex_range = objectGroup.map(function (d) { if (d.properties.per_gdex.typeof !== 'undefined' && d.properties.per_gdex < 100) return d.properties.per_gdex });
-per_asthma_range = objectGroup.map(function (d) { if (d.properties.per_asthma.typeof !== 'undefined' && d.properties.per_asthma < 100) return d.properties.per_asthma });
-soc_cohes_range = objectGroup.map(function (d) { if (d.properties.soc_cohes.typeof !== 'undefined' && d.properties.soc_cohes < 100) return d.properties.soc_cohes });
-  console.log('1. ', cleanUp(soc_cohes_range));
-  console.log('2. ', per_gdex_range);
-  console.log('3. ', ss.quantile(per_asthma_range,0.8),ss.quantile(per_asthma_range,0.6),ss.quantile(per_asthma_range,0.4),ss.quantile(per_asthma_range,0.2));
+  per_ovw_ob_range = objectGroup.map(function (d) { if (d.properties.per_ovw_ob.typeof !== 'undefined' && d.properties.per_ovw_ob < 100) return d.properties.per_ovw_ob });
+  per_ob_range = objectGroup.map(function (d) { if (d.properties.per_ob.typeof !== 'undefined' && d.properties.per_ob < 100) return d.properties.per_ob });
+  per_mvpa_range = objectGroup.map(function (d) { if (d.properties.per_mvpa.typeof !== 'undefined' && d.properties.per_mvpa < 100) return d.properties.per_mvpa });
+  per_hi_bp_range = objectGroup.map(function (d) { if (d.properties.per_hi_bp.typeof !== 'undefined' && d.properties.per_hi_bp < 100) return d.properties.per_hi_bp });
+  per_type2_range = objectGroup.map(function (d) { if (d.properties.per_type2.typeof !== 'undefined' && d.properties.per_type2 < 100) return d.properties.per_type2 });
+  per_gdex_range = objectGroup.map(function (d) { if (d.properties.per_gdex.typeof !== 'undefined' && d.properties.per_gdex < 100) return d.properties.per_gdex });
+  per_asthma_range = objectGroup.map(function (d) { if (d.properties.per_asthma.typeof !== 'undefined' && d.properties.per_asthma < 100) return d.properties.per_asthma });
+  soc_cohes_range = objectGroup.map(function (d) { if (d.properties.soc_cohes.typeof !== 'undefined' && d.properties.soc_cohes < 100) return d.properties.soc_cohes });
+  console.log(per_hi_bp_range);
 });
 
 // DEFINE MAP, ADD BASELAYER AND PLUGINS
@@ -100,13 +97,13 @@ var baseLayer = new L.mapbox.tileLayer('landplanner.map-khn9uycz').addTo(map);
 var hash = L.hash(map);
 
 // ADD THE REFERENCE OVERLAY
-var topPane = map._createPane('leaflet-top-pane', map.getPanes().mapPane);
+/*var topPane = map._createPane('leaflet-top-pane', map.getPanes().mapPane);
 var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
   maxZoom: 17,
   opacity: 0.7
 }).addTo(map);
 topPane.appendChild(topLayer.getContainer());
-topLayer.setZIndex(7);
+topLayer.setZIndex(7);*/
 
 // ADD THE LAYER CONTROL FUNCTION
 var oldLayer,newLayer;
