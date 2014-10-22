@@ -97,13 +97,13 @@ var baseLayer = new L.mapbox.tileLayer('landplanner.map-khn9uycz').addTo(map);
 var hash = L.hash(map);
 
 // ADD THE REFERENCE OVERLAY
-/*var topPane = map._createPane('leaflet-top-pane', map.getPanes().mapPane);
+var topPane = map._createPane('leaflet-top-pane', map.getPanes().mapPane);
 var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
   maxZoom: 17,
   opacity: 0.7
 }).addTo(map);
 topPane.appendChild(topLayer.getContainer());
-topLayer.setZIndex(7);*/
+topLayer.setZIndex(7);
 
 // ADD THE LAYER CONTROL FUNCTION
 var oldLayer,newLayer;
