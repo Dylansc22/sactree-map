@@ -31,7 +31,6 @@ function getColorNegative(d) {
     : d > ss.quantile(range,0.6) && d <= ss.quantile(range,0.8) ? '#ff7b68'
     : d > ss.quantile(range,0.4) && d <= ss.quantile(range,0.6) ? '#ffac9b'
     : d > ss.quantile(range,0.2) && d <= ss.quantile(range,0.4) ? '#ffd6cd'
-    : d > ss.min(range) && d <= ss.quantile(range,0.2) ? '#ffffff'
     : '#ffffff';
 }
 
@@ -82,7 +81,7 @@ $.getJSON("sactree_geoms4.json", function(data) {
   per_gdex_range = objectGroup.map(function (d) { if (d.properties.per_gdex.typeof !== 'undefined' && d.properties.per_gdex < 100) return d.properties.per_gdex });
   per_asthma_range = objectGroup.map(function (d) { if (d.properties.per_asthma.typeof !== 'undefined' && d.properties.per_asthma < 100) return d.properties.per_asthma });
   soc_cohes_range = objectGroup.map(function (d) { if (d.properties.soc_cohes.typeof !== 'undefined' && d.properties.soc_cohes < 100) return d.properties.soc_cohes });
-  console.log(per_hi_bp_range);
+  //console.log(per_hi_bp_range);
 });
 
 // DEFINE MAP, ADD BASELAYER AND PLUGINS
