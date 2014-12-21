@@ -77,7 +77,6 @@ $.getJSON("sactree_geoms4.json", function(data) {
   per_gdex_range = objectGroup.map(function (d) { if (d.properties.per_gdex.typeof !== 'undefined' && d.properties.per_gdex < 100) return d.properties.per_gdex });
   per_asthma_range = objectGroup.map(function (d) { if (d.properties.per_asthma.typeof !== 'undefined' && d.properties.per_asthma < 100) return d.properties.per_asthma });
   soc_cohes_range = objectGroup.map(function (d) { if (d.properties.soc_cohes.typeof !== 'undefined' && d.properties.soc_cohes < 100) return d.properties.soc_cohes });
-  //console.log(cleanUp(per_asthma_range));
 });
 
 // DEFINE MAP, ADD BASELAYER AND PLUGINS
@@ -88,12 +87,12 @@ map = L.map("map", {
   center: [38.574, -121.384],
 });
 map.zoomControl.setPosition('topleft');
-var baseLayer = new L.mapbox.tileLayer('landplanner.map-khn9uycz').addTo(map);
+var baseLayer = new L.mapbox.tileLayer('landplanner.c0e8d353').addTo(map);
 var hash = L.hash(map);
 
 // ADD THE REFERENCE OVERLAY
 var topPane = map._createPane('leaflet-top-pane', map.getPanes().mapPane);
-var topLayer = new L.mapbox.tileLayer('sactree.h7id69df', {
+var topLayer = new L.mapbox.tileLayer('landplanner.a5aeec7d', {
   maxZoom: 17,
   opacity: 0.7
 }).addTo(map);
@@ -699,7 +698,6 @@ function mouseout8(e) {
 
 function getStyle9(feature) {
   cleanUp(per_asthma_range);
-  console.log(feature.properties.ID,feature.properties.per_asthma);
   return {
     weight: 1,
     opacity: 0.8,
