@@ -18,8 +18,8 @@ function bmiFormatter(e) {
 // DECIDE WHICH LEGEND TO USE WHEN SWITCHING LAYERS
 function legendFormatter(f) {
   return (f == 'Percent_TC' || f == 'Percent_TC_bg') ?
-    '<img class="img-responsive" src="legend_tree.png"/>' : (f == 'per_gdex' ||
-      f == 'per_mvpa' || f == 'soc_cohes') ?
+    '<img class="img-responsive" src="legend_tree.png"/>' : 
+    (f == 'per_gdex' || f == 'per_mvpa' || f == 'soc_cohes') ?
     '<img class="img-responsive" src="legend_positive.png"/>' :
     '<img class="img-responsive" src="legend_negative.png"/>'
 };
@@ -66,12 +66,7 @@ $.getJSON("sactree_geoms4.json", function(data) {
       }
     }
   };
-  // MAKE THIS WORK TO SAVE SPACE:
-  /*var parsedOut = function(fieldName) {
-    objectGroup.map(function (d) {
-      if (d.properties.fieldName < 100) return d.properties.fieldName 
-    })
-  };*/
+ 
   mean_bmi_range = objectGroup.map(function (d) { if (d.properties.mean_bmi.typeof !== 'undefined' && d.properties.mean_bmi < 100) return d.properties.mean_bmi });
   per_ovw_ob_range = objectGroup.map(function (d) { if (d.properties.per_ovw_ob.typeof !== 'undefined' && d.properties.per_ovw_ob < 100) return d.properties.per_ovw_ob });
   per_ob_range = objectGroup.map(function (d) { if (d.properties.per_ob.typeof !== 'undefined' && d.properties.per_ob < 100) return d.properties.per_ob });
@@ -109,7 +104,8 @@ var oldLayer,newLayer;
 $('.layer').click(function() {
   oldLayer = myLayers[$('.active').attr('id')];
   newLayer = myLayers[$(this).attr('id')];
-  console.log($('.active').attr('id') + ' --> ' + $(this).attr('id'));
+  console.log("1 ", $('.active').attr('id') + ' --> ' + $(this).attr('id'));
+  console.log("2 ", this.text);
   $('#infobits').html('<h2>' + this.text + '</h2><hr>' + legendFormatter(
     this.id));
   map.removeLayer(oldLayer);
@@ -126,6 +122,8 @@ popup = new L.Popup({
 });
 var closeTooltip;
 var info;
+
+// SET THE INITIAL INFOBAR CONTENT
 document.getElementById('infobits').innerHTML =
   '<h2>Tree Cover - Census Block Groups</h2><hr><img class="img-responsive" src="legend_tree.png"/><hr><h4>Click on the map to learn more about tree cover or health outcomes at the zipcode level.</h4><hr>';
 
@@ -175,6 +173,7 @@ var Percent_TC_bg = L.geoJson(null, {
   onEachFeature: onEachFeature11
 });
 
+// CREATE AN OBJECT INDEX TO REFERENCE
 var myLayers = {
     "Percent_TC_bg": Percent_TC_bg,
     "Percent_TC": Percent_TC,
@@ -205,7 +204,14 @@ $.getJSON("sactree_geoms4.json", function(data) {
   Percent_TC.addData(zips_geojson);
   Percent_TC_bg.addData(bgs_geojson);
 });
+
+// ADD THE FIRST LAYER (TREE COVER) TO THE MAP
 map.addLayer(Percent_TC_bg);
+
+
+/////////////////////////////////////////////////////////////////
+////BEGIN FUNCTION SOUP//////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 
 // DEFINE THE STYLE AND BEHAVIOR OF EACH LAYER
 // 1 - Percent_TC
@@ -259,8 +265,7 @@ function mouseclick1(e) {
     '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
       .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
-  //A better way, but not working:
-  //document.getElementsByName('path')[0].style.weight=1;
+
   e.target.setStyle({
     opacity: 0.8,
     weight: 5,
@@ -319,8 +324,7 @@ function mousemove2(e) {
     '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
       .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
-  //A better way, but not working:
-  //document.getElementsByName('path')[0].style.weight=1;
+
   e.target.setStyle({
     opacity: 0.8,
     weight: 5,
@@ -379,8 +383,7 @@ function mousemove3(e) {
     '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
       .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
-  //A better way, but not working:
-  //document.getElementsByName('path')[0].style.weight=1;
+
   e.target.setStyle({
     opacity: 0.8,
     weight: 5,
@@ -439,8 +442,7 @@ function mousemove4(e) {
     '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
       .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
-  //A better way, but not working:
-  //document.getElementsByName('path')[0].style.weight=1;
+
   e.target.setStyle({
     opacity: 0.8,
     weight: 5,
@@ -499,8 +501,7 @@ function mousemove5(e) {
     '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
       .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
-  //A better way, but not working:
-  //document.getElementsByName('path')[0].style.weight=1;
+
   e.target.setStyle({
     opacity: 0.8,
     weight: 5,
@@ -559,8 +560,7 @@ function mousemove6(e) {
     '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
       .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
-  //A better way, but not working:
-  //document.getElementsByName('path')[0].style.weight=1;
+
   e.target.setStyle({
     opacity: 0.8,
     weight: 5,
@@ -619,8 +619,7 @@ function mousemove7(e) {
     '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
       .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
-  //A better way, but not working:
-  //document.getElementsByName('path')[0].style.weight=1;
+
   e.target.setStyle({
     opacity: 0.8,
     weight: 5,
@@ -679,8 +678,7 @@ function mousemove8(e) {
     '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
       .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
-  //A better way, but not working:
-  //document.getElementsByName('path')[0].style.weight=1;
+
   e.target.setStyle({
     opacity: 0.8,
     weight: 5,
@@ -739,8 +737,7 @@ function mousemove9(e) {
     '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
       .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
-  //A better way, but not working:
-  //document.getElementsByName('path')[0].style.weight=1;
+
   e.target.setStyle({
     opacity: 0.8,
     weight: 5,
@@ -799,8 +796,7 @@ function mousemove10(e) {
     '</b></td></tr><tr class="negative"><td>Asthma</td><td><b>' + nullFormatter(feature.properties
       .per_asthma) + '</b></td></tr></table><hr>';
   document.getElementById('infobits').innerHTML = info;
-  //A better way, but not working:
-  //document.getElementsByName('path')[0].style.weight=1;
+
   e.target.setStyle({
     opacity: 0.8,
     weight: 5,
@@ -849,8 +845,7 @@ function mousemove11(e) {
     nullFormatter(feature.properties.Percent_TC) +
     '</td></tr></table><small><i>Select other layers for additional information, including health outcomes.</i></small><hr>';
   document.getElementById('infobits').innerHTML = info;
-  //A better way, but not working:
-  //document.getElementsByName('path')[0].style.weight=1;
+
   e.target.setStyle({
     opacity: 0.8,
     weight: 5,
