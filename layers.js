@@ -25,8 +25,8 @@ function legendFormatter(f) {
 };
 
 // FORMAT COLOR SCHEME BY QUANTILE
-function getColorNegative(d) {
-  return d > 100 ? 'rgba(0,0,0,0)'
+function getColorNegative(d,range) {
+  return d > 100 || d == 'undefined' ? 'rgba(0,0,0,0)'
     : d > ss.quantile(range,0.8) && d <= 100 ? '#ff3030'
     : d > ss.quantile(range,0.6) && d <= ss.quantile(range,0.8) ? '#ff7b68'
     : d > ss.quantile(range,0.4) && d <= ss.quantile(range,0.6) ? '#ffac9b'
@@ -34,8 +34,8 @@ function getColorNegative(d) {
     : '#ffffff';
 }
 
-function getColorPositive(d) {
-  return d > 100 ? 'rgba(0,0,0,0)'
+function getColorPositive(d,range) {
+  return d > 100 || d == 'undefined' ? 'rgba(0,0,0,0)'
     : d >= ss.quantile(range,0.8) && d < 100 ? '#4682b4'
     : d >= ss.quantile(range,0.6) && d < ss.quantile(range,0.8) ? '#7a9fc7'
     : d >= ss.quantile(range,0.4) && d < ss.quantile(range,0.6) ? '#a7bfd9'
@@ -55,17 +55,18 @@ var range,
   per_asthma_range,
   soc_cohes_range;
 
+// A UTILITY TO CLEAN THE ARRAYS OF UNDEFINED VALUES
+var cleanUp = function(fieldName) {
+  for (var i=fieldName.length - 1; i >=0; i--) {
+    if ( fieldName[i] === undefined ) {
+        fieldName.splice(i,1);
+    }
+  }
+};
+
 // ASSIGN RANGES
 $.getJSON("sactree_geoms4.json", function(data) {
   var objectGroup = data.objects.zips.geometries;
-  // IF NECESSARY, A UTILITY TO SHORTEN THE ARRAYS
-  var cleanUp = function (fieldName) {
-    for (var i=fieldName.length - 1; i >=0; i--) {
-      if ( fieldName[i] === undefined ) {
-          fieldName.splice(i,1);
-      }
-    }
-  };
  
   mean_bmi_range = objectGroup.map(function (d) { if (d.properties.mean_bmi.typeof !== 'undefined' && d.properties.mean_bmi < 100) return d.properties.mean_bmi });
   per_ovw_ob_range = objectGroup.map(function (d) { if (d.properties.per_ovw_ob.typeof !== 'undefined' && d.properties.per_ovw_ob < 100) return d.properties.per_ovw_ob });
@@ -76,7 +77,7 @@ $.getJSON("sactree_geoms4.json", function(data) {
   per_gdex_range = objectGroup.map(function (d) { if (d.properties.per_gdex.typeof !== 'undefined' && d.properties.per_gdex < 100) return d.properties.per_gdex });
   per_asthma_range = objectGroup.map(function (d) { if (d.properties.per_asthma.typeof !== 'undefined' && d.properties.per_asthma < 100) return d.properties.per_asthma });
   soc_cohes_range = objectGroup.map(function (d) { if (d.properties.soc_cohes.typeof !== 'undefined' && d.properties.soc_cohes < 100) return d.properties.soc_cohes });
-  //console.log(per_hi_bp_range);
+  //console.log(cleanUp(per_asthma_range));
 });
 
 // DEFINE MAP, ADD BASELAYER AND PLUGINS
@@ -105,7 +106,6 @@ $('.layer').click(function() {
   oldLayer = myLayers[$('.active').attr('id')];
   newLayer = myLayers[$(this).attr('id')];
   console.log("1 ", $('.active').attr('id') + ' --> ' + $(this).attr('id'));
-  console.log("2 ", this.text);
   $('#infobits').html('<h2>' + this.text + '</h2><hr>' + legendFormatter(
     this.id));
   map.removeLayer(oldLayer);
@@ -285,13 +285,13 @@ function mouseout1(e) {
   // 2 - mean_bmi
 
 function getStyle2(feature) {
-  range = mean_bmi_range;
+  cleanUp(mean_bmi_range);
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColorNegative(feature.properties.mean_bmi)
+    fillColor: getColorNegative(feature.properties.mean_bmi,mean_bmi_range)
   };
 }
 
@@ -344,13 +344,13 @@ function mouseout2(e) {
   // 3 - per_ovw_ob
 
 function getStyle3(feature) {
-  range = per_ovw_ob_range;
+  cleanUp(per_ovw_ob_range);
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColorNegative(feature.properties.per_ovw_ob)
+    fillColor: getColorNegative(feature.properties.per_ovw_ob,per_ovw_ob_range)
   };
 }
 
@@ -403,13 +403,13 @@ function mouseout3(e) {
   // 4 - per_ob
 
 function getStyle4(feature) {
-  range = per_ob_range;
+  cleanUp(per_ob_range);
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColorNegative(feature.properties.per_ob)
+    fillColor: getColorNegative(feature.properties.per_ob,per_ob_range)
   };
 }
 
@@ -462,13 +462,13 @@ function mouseout4(e) {
   // 5 - per_mvpa
 
 function getStyle5(feature) {
-  range = per_mvpa_range;
+  cleanUp(per_mvpa_range);
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColorPositive(feature.properties.per_mvpa)
+    fillColor: getColorPositive(feature.properties.per_mvpa,per_mvpa_range)
   };
 }
 
@@ -521,13 +521,13 @@ function mouseout5(e) {
   // 6 - per_hi_bp
 
 function getStyle6(feature) {
-  range = per_hi_bp_range;
+  cleanUp(per_hi_bp_range);
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColorNegative(feature.properties.per_hi_bp)
+    fillColor: getColorNegative(feature.properties.per_hi_bp,per_hi_bp_range)
   };
 }
 
@@ -580,13 +580,13 @@ function mouseout6(e) {
   // 7 - per_type2
 
 function getStyle7(feature) {
-  range = per_type2_range;
+  cleanUp(per_type2_range);
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColorNegative(feature.properties.per_type2)
+    fillColor: getColorNegative(feature.properties.per_type2,per_type2_range)
   };
 }
 
@@ -639,13 +639,13 @@ function mouseout7(e) {
   // 8 - per_gdex
 
 function getStyle8(feature) {
-  range = per_gdex_range;
+  cleanUp(per_gdex_range);
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColorPositive(feature.properties.per_gdex)
+    fillColor: getColorPositive(feature.properties.per_gdex,per_gdex_range)
   };
 }
 
@@ -698,13 +698,13 @@ function mouseout8(e) {
   // 9 - per_asthma
 
 function getStyle9(feature) {
-  range = per_asthma_range;
+  cleanUp(per_asthma_range);
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColorNegative(feature.properties.per_asthma)
+    fillColor: getColorNegative(feature.properties.per_asthma,per_asthma_range)
   };
 }
 
@@ -757,13 +757,13 @@ function mouseout9(e) {
   // 10 - soc_cohes
 
 function getStyle10(feature) {
-  range = soc_cohes_range;
+  cleanUp(soc_cohes_range);
   return {
     weight: 1,
     opacity: 0.8,
     color: '#444',
     fillOpacity: 0.9,
-    fillColor: getColorPositive(feature.properties.soc_cohes)
+    fillColor: getColorPositive(feature.properties.soc_cohes,soc_cohes_range)
   };
 }
 
