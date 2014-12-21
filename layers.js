@@ -699,6 +699,7 @@ function mouseout8(e) {
 
 function getStyle9(feature) {
   cleanUp(per_asthma_range);
+  console.log(feature.properties.ID,feature.properties.per_asthma);
   return {
     weight: 1,
     opacity: 0.8,
